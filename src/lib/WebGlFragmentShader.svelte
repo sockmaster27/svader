@@ -9,7 +9,9 @@
      *
      * - **scale**: A `float` of the current scale factor, i.e. zoom level.
      *
-     * @typedef {"resolution" | "offset" | "scale"} BuiltinData
+     * - **time**: A `float` of the current time in seconds. NOTE: Passing this parameter to the shader will cause it to rerender every frame.
+     *
+     * @typedef {"resolution" | "offset" | "scale" | "time"} BuiltinData
      */
 
     /**
@@ -106,6 +108,10 @@
      * @type {Parameter[]}
      */
     export let parameters = [];
+
+    const hasTimeParameter = parameters.some(
+        parameter => parameter.data === "time",
+    );
 
     /** @typedef {{
      *     gl: WebGL2RenderingContext,
@@ -274,13 +280,47 @@
     }
 
     /**
+     * @param {number} time
+     */
+    async function updateTime(time) {
+        const { gl, shaderProgram } = await configPromise;
+
+        const timeParam = parameters.find(
+            parameter => parameter.data === "time",
+        );
+        if (timeParam !== undefined) {
+            const uniformPosition = gl.getUniformLocation(
+                shaderProgram,
+                timeParam.name,
+            );
+            gl.uniform1f(uniformPosition, time);
+
+            // If the time is passed to the shader, it will rerender every frame, so no need to request a render pass.
+        }
+    }
+
+    /**
      * Checks if the given parameter represents a builtin type of data, such as `"resolution"`.
      *
      * @param {Parameter} parameter
      * @returns {parameter is BuiltinParameter}
      */
     function isBuiltinParameter(parameter) {
-        return typeof parameter.data === "string";
+        const shouldBeBuiltin = typeof parameter.data === "string";
+        if (!shouldBeBuiltin) return false;
+
+        switch (parameter.data) {
+            case "resolution":
+            case "offset":
+            case "scale":
+            case "time":
+                return true;
+            default:
+                throw new Error(
+                    // @ts-expect-error: Match should be exhaustive, but non-TS users should get a helpful runtime-error.
+                    `Unknown builtin parameter: ${parameter.data}`,
+                );
+        }
     }
 
     /**
@@ -370,11 +410,13 @@
     {canRender}
     maxSize={maxTextureSize}
     offsetFromBottom
+    {hasTimeParameter}
     {render}
     {updateCanvasSize}
     {updateContainerSize}
     {updateOffset}
     {updateScale}
+    {updateTime}
     bind:canvasElement
     bind:requestRender
     {...$$restProps}

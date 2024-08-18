@@ -9,7 +9,9 @@
      *
      * - **scale**: An `f32` of the current scale factor, i.e. zoom level.
      *
-     * @typedef {"resolution" | "offset" | "scale"} BuiltinData
+     * - **time**: An `f32` of the current time in seconds.
+     *
+     * @typedef {"resolution" | "offset" | "scale" | "time"} BuiltinData
      */
 
     /**
@@ -17,8 +19,17 @@
      *     label: string,
      *     binding: number,
      *     type: "uniform" | "storage",
-     *     data: BufferSource | BuiltinData,
-     * }} Parameter
+     *     data: BuiltinData,
+     * }} BuiltinParameter
+     *
+     * @typedef {{
+     *     label: string,
+     *     binding: number,
+     *     type: "uniform" | "storage",
+     *     data: BufferSource,
+     * }} NonBuiltinParameter
+     *
+     * @typedef {BuiltinParameter | NonBuiltinParameter} Parameter
      */
 </script>
 
@@ -60,6 +71,10 @@
      */
     export let parameters = [];
 
+    const hasTimeParameter = parameters.some(
+        parameter => parameter.data === "time",
+    );
+
     /** @typedef {{
      *     device: GPUDevice,
      *     context: GPUCanvasContext,
@@ -95,7 +110,7 @@
             const parameterBuffers = parameters.map(parameter => {
                 /** @type {number} */
                 let byteLength;
-                if (isBuiltinData(parameter.data))
+                if (isBuiltinParameter(parameter))
                     switch (parameter.data) {
                         case "resolution":
                         case "offset":
@@ -282,13 +297,44 @@
     }
 
     /**
-     * Checks if the given data represents a builtin type of data, such as `"resolution"`.
-     *
-     * @param {Parameter["data"]} data
-     * @returns {data is BuiltinData}
+     * @param {number} time
      */
-    function isBuiltinData(data) {
-        return typeof data === "string";
+    async function updateTime(time) {
+        const { device, parameterBuffers } = await configPromise;
+
+        const timeBuffer = parameterBuffers.find(
+            (_, i) => parameters[i].data === "time",
+        );
+        if (timeBuffer !== undefined) {
+            const scaleArray = new Float32Array([time]);
+            device.queue.writeBuffer(timeBuffer, 0, scaleArray);
+
+            // If the time is passed to the shader, it will rerender every frame, so no need to request a render pass.
+        }
+    }
+
+    /**
+     * Checks if the given parameter represents a builtin type of data, such as `"resolution"`.
+     *
+     * @param {Parameter} parameter
+     * @returns {parameter is BuiltinParameter}
+     */
+    function isBuiltinParameter(parameter) {
+        const shouldBeBuiltin = typeof parameter.data === "string";
+        if (!shouldBeBuiltin) return false;
+
+        switch (parameter.data) {
+            case "resolution":
+            case "offset":
+            case "scale":
+            case "time":
+                return true;
+            default:
+                throw new Error(
+                    // @ts-expect-error: Match should be exhaustive, but non-TS users should get a helpful runtime-error.
+                    `Unknown builtin parameter: ${parameter.data}`,
+                );
+        }
     }
 
     /**
@@ -297,10 +343,10 @@
     async function updateParameters(parameters) {
         const { device, parameterBuffers } = await configPromise;
 
-        for (const [parameter, buffer] of zip(parameters, parameterBuffers)) {
-            const data = parameter.data;
-            if (!isBuiltinData(data)) device.queue.writeBuffer(buffer, 0, data);
-        }
+        for (const [parameter, buffer] of zip(parameters, parameterBuffers))
+            if (!isBuiltinParameter(parameter))
+                device.queue.writeBuffer(buffer, 0, parameter.data);
+
         requestRender();
     }
     $: updateParameters(parameters);
@@ -309,10 +355,12 @@
 <BaseFragmentShader
     {canRender}
     maxSize={maxTextureSize}
+    {hasTimeParameter}
     {render}
     {updateContainerSize}
     {updateOffset}
     {updateScale}
+    {updateTime}
     bind:canvasElement
     bind:requestRender
     {...$$restProps}

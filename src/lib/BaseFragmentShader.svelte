@@ -1,6 +1,7 @@
 <script>
     import { pixelScale, clamp } from "./utils.js";
     import { intersectionObserver } from "./intersectionObserver.js";
+    import { onMount } from "svelte";
 
     /** @type {boolean} */
     export let canRender;
@@ -10,6 +11,24 @@
 
     /** @type {() => void} */
     export let render;
+
+    /**
+     * Whether the shader takes time as a parameter.
+     * This will cause the shader to rerender every frame.
+     *
+     * @type {boolean}
+     */
+    export let hasTimeParameter;
+
+    /**
+     * Timestamp of when the component was mounted. In seconds.
+     *
+     * @type {number}
+     */
+    let mountTime;
+    onMount(() => {
+        mountTime = performance.now() / 1000;
+    });
 
     /**
      * In WGSL, the fragment shader is rendered from the bottom-left corner of the canvas instead of the top-left.
@@ -26,6 +45,8 @@
     export let updateOffset;
     /** @type {(scale: number) => void} */
     export let updateScale;
+    /** @type {(time: number) => void} */
+    export let updateTime;
 
     /** @type {HTMLElement} */
     let containerElement;
@@ -78,9 +99,14 @@
             renderCallbacks.forEach(callback => callback());
             renderCallbacks.length = 0;
 
+            if (hasTimeParameter)
+                updateTime(performance.now() / 1000 - mountTime);
+
             render();
 
             renderRequested = false;
+
+            if (hasTimeParameter) requestRender();
         });
     }
 
