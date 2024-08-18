@@ -50,6 +50,9 @@
         typeof navigator !== "undefined" &&
         typeof navigator.gpu !== "undefined";
 
+    let hide = true;
+    export let fadeInDuration = 0;
+
     /**
      * The WGSL source code of the fragment shader to load. The entry point is `fragmentMain`.
      *
@@ -204,6 +207,7 @@
                 ],
             });
 
+            requestIdleCallback(() => (hide = false));
             resolve({
                 device,
                 context,
@@ -353,6 +357,8 @@
 </script>
 
 <BaseFragmentShader
+    {hide}
+    {fadeInDuration}
     {canRender}
     maxSize={maxTextureSize}
     {hasTimeParameter}

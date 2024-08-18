@@ -88,6 +88,9 @@
 
     const canRender = typeof WebGL2RenderingContext !== "undefined";
 
+    let hide = true;
+    export let fadeInDuration = 0;
+
     /**
      * The GLSL ES source code of the fragment shader to load.
      *
@@ -196,6 +199,7 @@
             );
             gl.enableVertexAttribArray(vertexAttributePosition);
 
+            requestIdleCallback(() => (hide = false));
             resolve({ gl, shaderProgram });
         }),
     );
@@ -407,6 +411,8 @@
 </script>
 
 <BaseFragmentShader
+    {hide}
+    {fadeInDuration}
     {canRender}
     maxSize={maxTextureSize}
     offsetFromBottom

@@ -3,6 +3,19 @@
     import { intersectionObserver } from "./intersectionObserver.js";
     import { onMount } from "svelte";
 
+    /**
+     * When transitioning from `true` to `false`, the canvas will slowly fade in, with a duration determined by {@linkcode fadeInDuration}.
+     *
+     * @type {boolean}
+     */
+    export let hide;
+    /**
+     * Duration of the fade-in transition, in seconds.
+     *
+     * @type {number}
+     */
+    export let fadeInDuration;
+
     /** @type {boolean} */
     export let canRender;
 
@@ -174,6 +187,8 @@
             bind:this={canvasElement}
             bind:devicePixelContentBoxSize={canvasSize}
             class:offset-from-bottom={offsetFromBottom}
+            class:hide
+            style:--fade-in-duration="{fadeInDuration}s"
             style:--max-size="{maxSize / $pixelScale}px"
             style:--offset-x="{offsetX / $pixelScale}px"
             style:--offset-y="{offsetY / $pixelScale}px"
@@ -204,6 +219,9 @@
         max-width: var(--max-size);
         max-height: var(--max-size);
 
+        opacity: 1;
+        transition: opacity var(--fade-in-duration);
+
         position: absolute;
         left: var(--offset-x);
     }
@@ -212,5 +230,8 @@
     }
     canvas.offset-from-bottom {
         bottom: var(--offset-y);
+    }
+    canvas.hide {
+        opacity: 0;
     }
 </style>
