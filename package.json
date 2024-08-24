@@ -1,6 +1,6 @@
 {
     "name": "svader",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A Svelte component for WebGPU fragment shaders",
     "author": "Holger Dal Mogensen",
     "license": "MIT",
