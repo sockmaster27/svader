@@ -6,3 +6,5 @@
 </p>
 
 # Svader
+
+Easily create fragment shaders for Svelte apps, using either WebGL or WebGPU.
