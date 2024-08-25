@@ -9,6 +9,22 @@
 
 Easily create fragment shaders for Svelte apps using WebGL and WebGPU.
 
+## Installation
+
+```bash
+# npm
+npm i -D svader
+
+# pnpm
+pnpm i -D svader
+
+# Bun
+bun i -D svader
+
+# Yarn
+yarn add -D svader
+```
+
 ## What is a fragment shader?
 
 A _fragment shader_ can be written as a function that takes the coordinates of a pixel on the screen, and returns the color that this pixel should have.
