@@ -27,15 +27,15 @@ yarn add -D svader
 
 ## What is a fragment shader?
 
-A _fragment shader_ can be written as a function that takes the coordinates of a pixel on the screen, and returns the color that this pixel should have.
+A _fragment shader_ can be written as a function that takes the coordinates of a pixel on the screen and returns the color that this pixel should have.
 This function can then be executed on the GPU, ensuring massive parallelism and speed.
 
 To learn more about how to write fragment shaders, check out [The Book of Shaders](https://thebookofshaders.com/).
 
 ## Usage
 
-To use a fragment shader component, you first need to decided whether to use WebGL or WebGPU.
-If you're unsure about what to use, see the [WebGL vs WebGPU](#webgl-vs-webgpu) section.
+To use a fragment shader component, you first need to decide whether to use WebGL or WebGPU.
+If you're unsure about what to use, see the [WebGL vs. WebGPU](#webgl-vs-webgpu) section.
 
 ### WebGL
 
@@ -86,20 +86,20 @@ When loading the shader from a file, it might be useful to know that the `code` 
 What this code does is:
 
 1. Add the given `u_offset` uniform to the 2D coordinates of the pixel given by `gl_FragCoord.xy`.
-2. Divide the resulting coordinates entrywise by the `u_resolution` uniform, to normalize the coordinates between 0 and 1.
-3. Return the normalized coordinates as the color of the pixel, such that the `x` coordinate becomes the red channel, and the `y` coordinate becomes the green channel. The blue channel is always set to 0, and the alpha (opacity) channels is always set to 1 (fully opaque).
+2. Divide the resulting coordinates entrywise by the `u_resolution` uniform to normalize the coordinates between 0 and 1.
+3. Return the normalized coordinates as the color of the pixel, such that the `x` coordinate becomes the red channel and the `y` coordinate becomes the green channel. The blue channel is always set to 0, and the alpha (opacity) channel is always set to 1 (fully opaque).
 
 In GLES, _uniforms_ are inputs to the function, that are the same for every pixel on the screen.
 These need to be passed in via the `parameters` property of the `<WebGlFragmentShader>` component.
 In this case, we need to pass in two uniforms: `u_resolution` and `u_offset`.
-Since these specific parameters are very commonly used, they are specially implemented in Svader,
+Since these specific parameters are very commonly used, they are specially implemented in Svader
 such that the `data` property of each parameter can simply be set to `"resolution"` and `"offset"` respectively.
 
 Lastly, the `<WebGlFragmentShader>` component accepts a fallback slot, which is rendered when the browser cannot render the shader.
 
 ### WebGPU
 
-The following is a minimal example of a WebGpu fragment shader component.
+The following is a minimal example of a WebGPU fragment shader component.
 
 ```svelte
 <script>
@@ -145,34 +145,34 @@ When loading the shader from a file, it might be useful to know that the `code` 
 
 What this code does is:
 
-1. Add the given `offset` uniform-variable to the 2D coordinates of the pixel given by `raw_pos.xy`.
-2. Divide the resulting coordinates entrywise by the `resolution` uniform, to normalize the coordinates between 0 and 1.
-3. Return the normalized coordinates as the color of the pixel, such that the `x` coordinate becomes the red channel, and the `y` coordinate becomes the green channel. The blue channel is always set to 0, and the alpha (opacity) channels is always set to 1 (fully opaque).
+1. Add the given `offset` uniform variable to the 2D coordinates of the pixel given by `raw_pos.xy`.
+2. Divide the resulting coordinates entrywise by the `resolution` uniform to normalize the coordinates between 0 and 1.
+3. Return the normalized coordinates as the color of the pixel, such that the `x` coordinate becomes the red channel and the `y` coordinate becomes the green channel. The blue channel is always set to 0, and the alpha (opacity) channel is always set to 1 (fully opaque).
 
 In WGSL, these `var<uniform>`s are the primary way to pass in parameters to the shader.
 These need to be passed in via the `parameters` property of the `<WebGpuFragmentShader>` component.
 Each of these parameters is an object with the following properties:
 
--   `label`: The label of the parameter which is used in error messages to make debugging easier.
+-   `label`: The label of the parameter that is used in error messages to make debugging easier.
 -   `binding`: An integer used to match the parameter to the variable in the shader code.
 -   `type`: Whether the parameter is a `"uniform"` or a `"storage"` variable.
 -   `data`: The value of the parameter.
 
 In this case, we need to pass in two uniforms: `resolution` and `offset`.
-Since these specific parameters are very commonly used, they are specially implemented in Svader,
+Since these specific parameters are very commonly used, they are specially implemented in Svader
 such that the `data` property of each parameter can simply be set to `"resolution"` and `"offset"` respectively.
 
 Lastly, the `<WebGpuFragmentShader>` component accepts a fallback slot, which is rendered when the browser cannot render the shader.
 
-## WebGL vs WebGPU
+## WebGL vs. WebGPU
 
 **For practical applications, default to using WebGL.**
 
-WebGL and WebGPU are both rendering APIs, that allow web applications to render GPU-accelerated graphics.
+WebGL and WebGPU are both rendering APIs that allow web applications to render GPU-accelerated graphics.
 
-WebGL is the older of the two, and is supported by [all modern browsers](https://caniuse.com/webgl).
+WebGL is the older of the two and is supported by [all modern browsers](https://caniuse.com/webgl).
 
-WebGPU is still in the experimental stage, and is only supported in a [few browsers](https://caniuse.com/webgpu).
+WebGPU is still in the experimental stage and is only supported in a [few browsers](https://caniuse.com/webgpu).
 However, it supports certain features that WebGL does not. For example, as of writing, WebGL in Google Chrome only supports having 8 canvases active in the document at once, while WebGPU supports a practically unlimited number.
 
 ## License
