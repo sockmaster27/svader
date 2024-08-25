@@ -107,3 +107,7 @@ WebGL is the older of the two, and is supported by [all modern browsers](https:/
 
 WebGPU is still in the experimental stage, and is only supported in a [few browsers](https://caniuse.com/webgpu).
 However, it supports certain features that WebGL does not. For example, as of writing, WebGL in Google Chrome only supports having 8 canvases active in the document at once, while WebGPU supports a practically unlimited number.
+
+## License
+
+Svader is licensed under the [MIT License](https://github.com/sockmaster27/svader/blob/master/LICENSE).
