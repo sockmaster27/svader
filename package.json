@@ -1,13 +1,13 @@
 {
     "name": "svader",
     "version": "0.1.1",
-    "description": "Easily create fragment shaders for Svelte apps",
+    "description": "Easily create fragment shaders for Svelte apps using WebGL and WebGPU",
     "author": "Holger Dal Mogensen",
     "license": "MIT",
     "keywords": [
         "svelte",
         "webgpu",
-        "weblgl",
+        "webgl",
         "gpu",
         "accelerated",
         "graphics",
