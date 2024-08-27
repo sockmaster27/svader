@@ -4,6 +4,23 @@
     import { onMount } from "svelte";
 
     /**
+     * The width of the canvas element.
+     *
+     * If not set, the width will be set to 100% of the parent element.
+     *
+     * @type {string | undefined}
+     */
+    export let width;
+    /**
+     * The height of the canvas element.
+     *
+     * If not set, the height will be set to 100% of the parent element.
+     *
+     * @type {string | undefined}
+     */
+    export let height;
+
+    /**
      * When transitioning from `true` to `false`, the canvas will slowly fade in, with a duration determined by {@linkcode fadeInDuration}.
      *
      * @type {boolean}
@@ -181,19 +198,21 @@
         bind:devicePixelContentBoxSize={containerSize}
         use:intersectionObserver
         on:intersectionchanged={updateCanvasCutout}
+        style:--width={width}
+        style:--height={height}
         {...$$restProps}
     >
         <canvas
             bind:this={canvasElement}
             bind:devicePixelContentBoxSize={canvasSize}
+            use:intersectionObserver={{ rootMargin: "100px" }}
+            on:intersectionchanged={updateCanvasCutout}
             class:offset-from-bottom={offsetFromBottom}
             class:hide
             style:--fade-in-duration="{fadeInDuration}s"
             style:--max-size="{maxSize / $pixelScale}px"
             style:--offset-x="{offsetX / $pixelScale}px"
             style:--offset-y="{offsetY / $pixelScale}px"
-            use:intersectionObserver={{ rootMargin: "100px" }}
-            on:intersectionchanged={updateCanvasCutout}
         >
             <slot></slot>
         </canvas>
@@ -206,8 +225,8 @@
     div {
         /* box-sizing: border-box; */
         position: relative;
-        width: 100%;
-        height: 100%;
+        width: var(--width, 100%);
+        height: var(--height, 100%);
     }
 
     canvas {

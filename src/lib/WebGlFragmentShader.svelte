@@ -88,6 +88,23 @@
 
     const canRender = typeof WebGL2RenderingContext !== "undefined";
 
+    /**
+     * The width of the canvas element.
+     *
+     * If not set, the width will be set to 100% of the parent element.
+     *
+     * @type {string | undefined}
+     */
+    export let width = undefined;
+    /**
+     * The height of the canvas element.
+     *
+     * If not set, the height will be set to 100% of the parent element.
+     *
+     * @type {string | undefined}
+     */
+    export let height = undefined;
+
     let hide = true;
     export let fadeInDuration = 0;
 
@@ -411,6 +428,8 @@
 </script>
 
 <BaseFragmentShader
+    {width}
+    {height}
     {hide}
     {fadeInDuration}
     {canRender}

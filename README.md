@@ -63,6 +63,8 @@ The following is a minimal example of a WebGL fragment shader component.
 </script>
 
 <WebGlFragmentShader
+    width="10000px"
+    height="10000px"
     code={shaderCode}
     parameters={[
         {
@@ -156,6 +158,8 @@ The following is a minimal example of a WebGPU fragment shader component.
 </script>
 
 <WebGpuFragmentShader
+    width="10000px"
+    height="10000px"
     code={shaderCode}
     parameters={[
         {

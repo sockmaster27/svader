@@ -7,8 +7,9 @@
 </script>
 
 <WebGlFragmentShader
+    width="10000px"
+    height="10000px"
     code={shaderCode}
-    style="width: 10000px; height: 10000px"
     parameters={[
         {
             name: "u_resolution",

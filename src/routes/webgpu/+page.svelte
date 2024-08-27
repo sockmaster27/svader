@@ -7,7 +7,8 @@
 </script>
 
 <WebGpuFragmentShader
-    style="width: 10000px; height: 10000px"
+    width="10000px"
+    height="10000px"
     code={shaderCode}
     parameters={[
         {
