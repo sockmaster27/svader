@@ -322,7 +322,7 @@
             default:
                 throw new Error(
                     // @ts-expect-error: Match should be exhaustive, but non-TS users should get a helpful runtime-error.
-                    `Unknown builtin parameter: ${parameter.data}`,
+                    `Unknown builtin data: ${parameter.data}`,
                 );
         }
     }

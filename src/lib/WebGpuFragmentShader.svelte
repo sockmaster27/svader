@@ -120,11 +120,14 @@
                             byteLength = new Float32Array(2).byteLength;
                             break;
                         case "scale":
+                        case "time":
                             byteLength = new Float32Array(1).byteLength;
                             break;
                         default:
-                            // Ensure exhaustive match
-                            throw new Error("Unknown builtin data");
+                            throw new Error(
+                                // @ts-expect-error: Ensure exhaustive match
+                                `Unknown builtin data: ${parameter.data}`,
+                            );
                     }
                 else byteLength = parameter.data.byteLength;
 
