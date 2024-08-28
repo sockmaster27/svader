@@ -63,8 +63,8 @@ The following is a minimal example of a WebGL fragment shader component.
 </script>
 
 <WebGlFragmentShader
-    width="10000px"
-    height="10000px"
+    width="500px"
+    height="500px"
     code={shaderCode}
     parameters={[
         {
@@ -80,6 +80,10 @@ The following is a minimal example of a WebGL fragment shader component.
     <div class="fallback">WebGL not supported in this environment.</div>
 </WebGlFragmentShader>
 ```
+
+This produces the following output:
+
+![Output of the WebGL shader](https://raw.githubusercontent.com/sockmaster27/svader/master/resources/debugShaderWebGl.png)
 
 Here, the `shaderCode` variable is a string containing the [GLES](https://en.wikipedia.org/wiki/OpenGL_ES) shader code.
 For simplicity, this is stored as a string, but it would typically be stored in a separate `myShader.frag` file.
@@ -158,8 +162,8 @@ The following is a minimal example of a WebGPU fragment shader component.
 </script>
 
 <WebGpuFragmentShader
-    width="10000px"
-    height="10000px"
+    width="500px"
+    height="500px"
     code={shaderCode}
     parameters={[
         {
@@ -179,6 +183,10 @@ The following is a minimal example of a WebGPU fragment shader component.
     <div class="fallback">WebGPU not supported in this environment.</div>
 </WebGpuFragmentShader>
 ```
+
+This produces the following output:
+
+![Output of the WebGPU shader](https://raw.githubusercontent.com/sockmaster27/svader/master/resources/debugShaderWebGpu.png)
 
 Here, the `shaderCode` variable is a string containing the [WGSL](https://google.github.io/tour-of-wgsl/) shader code.
 For simplicity, this is stored as a string, but it would typically be stored in a separate `myShader.wgsl` file.
