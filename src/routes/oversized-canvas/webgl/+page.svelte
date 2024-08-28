@@ -1,9 +1,6 @@
 <script>
     import { WebGlFragmentShader } from "$lib/index.js";
-
-    /** @type {import('./$types').PageData} */
-    export let data;
-    const shaderCode = data.shaderCode;
+    import shaderCode from "./shader.frag?raw";
 </script>
 
 <WebGlFragmentShader

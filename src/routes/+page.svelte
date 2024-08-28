@@ -1,4 +1,3 @@
 <ul>
-    <li><a href="/webgl">WebGL</a></li>
-    <li><a href="/webgpu">WebGPU</a></li>
+    <li><a href="oversized-canvas/">Oversized canvas</a></li>
 </ul>
