@@ -29,30 +29,30 @@
      * }
      * | {
      *     type: "vec2" | "ivec2" | "uvec2",
-     *     data: [number, number],
+     *     data: readonly [number, number],
      * }
      * | {
      *     type: "vec3" | "ivec3" | "uvec3",
-     *     data: [number, number, number],
+     *     data: readonly [number, number, number],
      * }
      * | {
      *     type: "vec4" | "ivec4" | "uvec4",
-     *     data: [number, number, number, number],
+     *     data: readonly [number, number, number, number],
      * }
      * | {
      *     type: "vec4" | "ivec4" | "uvec4",
-     *     data: [number, number, number, number],
+     *     data: readonly [number, number, number, number],
      * }
      * | {
      *     type: "mat2",
-     *     data: [
+     *     data: readonly [
      *         number, number,
      *         number, number,
      *     ],
      * }
      * | {
      *     type: "mat3",
-     *     data: [
+     *     data: readonly [
      *         number, number, number,
      *         number, number, number,
      *         number, number, number,
@@ -60,7 +60,7 @@
      * }
      * | {
      *     type: "mat4",
-     *     data: [
+     *     data: readonly [
      *         number, number, number, number,
      *         number, number, number, number,
      *         number, number, number, number,
