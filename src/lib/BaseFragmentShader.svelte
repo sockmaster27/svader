@@ -155,10 +155,16 @@
 
         requestRender();
     }
-    $: updateCanvasSizeInner(canvasWidth, canvasHeight);
 
-    $: updateContainerSize(containerWidth, containerHeight);
-    $: updateOffset(offsetX, offsetY);
+    $: if (canvasWidth !== undefined && canvasHeight !== undefined)
+        updateCanvasSizeInner(canvasWidth, canvasHeight);
+
+    $: if (containerWidth !== undefined && containerHeight !== undefined)
+        updateContainerSize(containerWidth, containerHeight);
+
+    $: if (offsetX !== undefined && offsetY !== undefined)
+        updateOffset(offsetX, offsetY);
+
     $: updateScale($pixelScale);
 
     let offsetX = 0;
