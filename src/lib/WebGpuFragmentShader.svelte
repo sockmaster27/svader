@@ -149,7 +149,7 @@
                 else byteLength = parameter.data.byteLength;
 
                 return device.createBuffer({
-                    label: `${parameter.label} Paramter`,
+                    label: `${parameter.label} Parameter`,
                     size: byteLength,
                     usage:
                         GPUBufferUsage.COPY_DST |
