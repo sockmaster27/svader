@@ -21,6 +21,7 @@ fn halo(pos: vec2f, center: vec2f, radius: f32) -> f32 {
     return halo_solid + halo_glow;
 }
 
+
 @fragment
 fn fragmentMain(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
     let pos = raw_pos.xy + offset;
