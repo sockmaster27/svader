@@ -30,12 +30,6 @@
                     type: "uniform",
                     data: "offset",
                 },
-                {
-                    label: "Scale",
-                    binding: 2,
-                    type: "uniform",
-                    data: "scale",
-                },
             ]}
         ></WebGpuFragmentShader>
     </div>
@@ -68,10 +62,16 @@
 
     h1 {
         font-family: "Handjet", sans-serif;
-        font-size: 5rem;
+        font-size: 8rem;
 
         color: rgb(250, 250, 250);
 
         margin: 0;
+    }
+
+    @media (max-width: 700px) or (max-height: 700px) {
+        h1 {
+            font-size: 3.5rem;
+        }
     }
 </style>
