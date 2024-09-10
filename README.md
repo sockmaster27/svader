@@ -32,6 +32,12 @@ This function can then be executed on the GPU, ensuring massive parallelism and 
 
 To learn more about how to write fragment shaders, check out [The Book of Shaders](https://thebookofshaders.com/).
 
+The following is a collection of examples all made using Svader.
+
+![Shader example collage](https://raw.githubusercontent.com/sockmaster27/svader/master/resources/collage.png)
+
+The source code for these examples can be found in the [`src/routes/`](https://github.com/sockmaster27/svader/tree/master/src/routes) directory.
+
 ## Usage
 
 To use a fragment shader component, you first need to decide whether to use WebGL or WebGPU.
