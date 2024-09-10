@@ -32,11 +32,10 @@ This function can then be executed on the GPU, ensuring massive parallelism and 
 
 To learn more about how to write fragment shaders, check out [The Book of Shaders](https://thebookofshaders.com/).
 
-The following is a collection of examples all made using Svader.
+The following is a collection of examples all made using Svader. The live version of all of these can be previewed on [svader.vercel.app](https://svader.vercel.app/),
+and the source code can be found in the [`src/routes/`](https://github.com/sockmaster27/svader/tree/master/src/routes) directory.
 
 ![Shader example collage](https://raw.githubusercontent.com/sockmaster27/svader/master/resources/collage.png)
-
-The source code for these examples can be found in the [`src/routes/`](https://github.com/sockmaster27/svader/tree/master/src/routes) directory.
 
 ## Usage
 
