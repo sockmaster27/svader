@@ -42,6 +42,14 @@ yarn add -D svader
 To use a fragment shader component, you first need to decide whether to use WebGL or WebGPU.
 If you're unsure about what to use, see the [WebGL vs. WebGPU](#webgl-vs-webgpu) section.
 
+### Contents
+- [WebGL](#webgl)
+  - [WebGL parameters](#webgl-parameters)
+    - [WebGL builtin data](#webgl-builtin-data)
+- [WebGPU](#webgpu)
+  - [WebGPU parameters](#webgpu-parameters)
+    - [WebGPU builtin data](#webgpu-builtin-data)
+
 ### WebGL
 
 The following is a minimal example of a WebGL fragment shader component.
