@@ -285,4 +285,4 @@ However, it supports certain features that WebGL does not. For example, as of wr
 
 ## License
 
-Svader is licensed under the [MIT License](https://github.com/sockmaster27/svader/blob/master/LICENSE).
+Svader is licensed under the [MIT License](https://github.com/sockmaster27/svader/blob/master/LICENSE.md).
