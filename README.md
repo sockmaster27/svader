@@ -205,13 +205,6 @@ What this code does is:
 
 In WGSL, these `var<uniform>`s are the primary way to pass in parameters to the shader.
 These need to be passed in via the `parameters` property of the `<WebGpuFragmentShader>` component.
-Each of these parameters is an object with the following properties:
-
--   `label`: The label of the parameter that is used in error messages to make debugging easier.
--   `binding`: An integer used to match the parameter to the variable in the shader code.
--   `type`: Whether the parameter is a `"uniform"` or a `"storage"` variable.
--   `data`: The value of the parameter.
-
 In this case, we need to pass in two uniforms: `resolution` and `offset`.
 Since these specific parameters are very commonly used, they are specially implemented in Svader
 such that the `data` property of each parameter can simply be set to `"resolution"` and `"offset"` respectively.
