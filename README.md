@@ -252,6 +252,8 @@ The `parameters` property is an array of objects with the following properties:
     Note that Svader currently only supports `var<storage, read>` and not `var<storage, read_write>`.
 
 -   **`data`**: The value of the parameter, or a string specifying a piece of [builtin data](#webgpu-builtin-data).
+    If not builtin data, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
+    For example, to pass in a number to an `f32` parameter, it can be constructed like `new Float32Array([myNumberValue])`.
 
 ##### WebGPU builtin data
 
