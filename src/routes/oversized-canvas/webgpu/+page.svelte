@@ -11,13 +11,11 @@
         {
             label: "Resolution",
             binding: 0,
-            type: "uniform",
             data: "resolution",
         },
         {
             label: "Offset",
             binding: 1,
-            type: "uniform",
             data: "offset",
         },
     ]}

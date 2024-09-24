@@ -18,15 +18,15 @@
      * @typedef {{
      *     label: string,
      *     binding: number,
-     *     type: "uniform" | "storage",
      *     data: BuiltinData,
+     *     storage?: boolean,
      * }} BuiltinParameter
      *
      * @typedef {{
      *     label: string,
      *     binding: number,
-     *     type: "uniform" | "storage",
      *     data: BufferSource,
+     *     storage?: boolean,
      * }} NonBuiltinParameter
      *
      * @typedef {BuiltinParameter | NonBuiltinParameter} Parameter
@@ -203,10 +203,9 @@
                     size: byteLength,
                     usage:
                         GPUBufferUsage.COPY_DST |
-                        {
-                            uniform: GPUBufferUsage.UNIFORM,
-                            storage: GPUBufferUsage.STORAGE,
-                        }[parameter.type],
+                        ((parameter.storage ?? false)
+                            ? GPUBufferUsage.STORAGE
+                            : GPUBufferUsage.UNIFORM),
                 });
             });
 

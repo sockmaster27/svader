@@ -43,12 +43,13 @@ To use a fragment shader component, you first need to decide whether to use WebG
 If you're unsure about what to use, see the [WebGL vs. WebGPU](#webgl-vs-webgpu) section.
 
 ### Sections
-- [WebGL](#webgl)
-  - [WebGL parameters](#webgl-parameters)
-    - [WebGL builtin data](#webgl-builtin-data)
-- [WebGPU](#webgpu)
-  - [WebGPU parameters](#webgpu-parameters)
-    - [WebGPU builtin data](#webgpu-builtin-data)
+
+-   [WebGL](#webgl)
+    -   [WebGL parameters](#webgl-parameters)
+        -   [WebGL builtin data](#webgl-builtin-data)
+-   [WebGPU](#webgpu)
+    -   [WebGPU parameters](#webgpu-parameters)
+        -   [WebGPU builtin data](#webgpu-builtin-data)
 
 ### WebGL
 
@@ -182,13 +183,11 @@ The following is a minimal example of a WebGPU fragment shader component.
         {
             label: "Resolution",
             binding: 0,
-            type: "uniform",
             data: "resolution",
         },
         {
             label: "Offset",
             binding: 1,
-            type: "uniform",
             data: "offset",
         },
     ]}
@@ -235,25 +234,25 @@ The `parameters` property is an array of objects with the following properties:
 
     the `binding` property should be `42`.
 
--   **`type`**: Whether the parameter is a `"uniform"` or a `"storage"` variable.
+-   **`data`**: The value of the parameter, or a string specifying a piece of [builtin data](#webgpu-builtin-data).
+    If not builtin data, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
+    For example, to pass in a number to an `f32` parameter, it can be constructed like `new Float32Array([myNumberValue])`.
+
+-   **`storage`**: [Optional - defaults to `false`] Whether the parameter is a storage variable rather than a uniform variable.
     This has to match the declaration in the shader code, e.g. for the variable declaration
 
     ```WGSL
     @group(0) @binding(0) var<uniform> my_variable: f32;
     ```
 
-    the `type` property should be `"uniform"`, and for
+    the `storage` property should be `false` or omitted, and for
 
     ```WGSL
     @group(0) @binding(0) var<storage, read> my_variable: f32;
     ```
 
-    it should be `"storage"`.
+    it should be `true`.
     Note that Svader currently only supports `var<storage, read>` and not `var<storage, read_write>`.
-
--   **`data`**: The value of the parameter, or a string specifying a piece of [builtin data](#webgpu-builtin-data).
-    If not builtin data, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
-    For example, to pass in a number to an `f32` parameter, it can be constructed like `new Float32Array([myNumberValue])`.
 
 ##### WebGPU builtin data
 

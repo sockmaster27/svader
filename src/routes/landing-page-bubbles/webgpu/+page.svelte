@@ -32,25 +32,21 @@
                 {
                     label: "Offset",
                     binding: 0,
-                    type: "uniform",
                     data: "offset",
                 },
                 {
                     label: "Scale",
                     binding: 1,
-                    type: "uniform",
                     data: "scale",
                 },
                 {
                     label: "Time",
                     binding: 2,
-                    type: "uniform",
                     data: "time",
                 },
                 {
                     label: "Color",
                     binding: 3,
-                    type: "uniform",
                     data: new Float32Array(color),
                 },
             ]}
