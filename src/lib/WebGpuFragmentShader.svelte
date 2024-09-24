@@ -31,6 +31,63 @@
      *
      * @typedef {BuiltinParameter | NonBuiltinParameter} Parameter
      */
+
+    const canRender =
+        typeof navigator !== "undefined" &&
+        typeof navigator.gpu !== "undefined";
+
+    /**
+     * @typedef {{
+     *     device: GPUDevice,
+     *     vertexBuffer: GPUBuffer,
+     *     vertexBufferLayout: GPUVertexBufferLayout,
+     * }} GlobalConfig
+     */
+
+    /** @type {Promise<GlobalConfig | undefined>} */
+    const globalConfigPromise = globalInit();
+    async function globalInit() {
+        if (!canRender) return;
+        const adapter = await navigator.gpu.requestAdapter();
+        if (!adapter) throw new Error("No WebGPU adapter found.");
+
+        const device = await adapter.requestDevice();
+
+        const vertices = new Float32Array([
+            -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1,
+        ]);
+        const vertexBuffer = device.createBuffer({
+            label: "ScreenQuad Vertex Buffer",
+            size: vertices.byteLength,
+            usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+        });
+        device.queue.writeBuffer(vertexBuffer, 0, vertices);
+        /** @type {GPUVertexBufferLayout} */
+        const vertexBufferLayout = {
+            arrayStride: 8,
+            attributes: [
+                {
+                    format: "float32x2",
+                    offset: 0,
+                    shaderLocation: 0,
+                },
+            ],
+        };
+
+        return {
+            device,
+            vertexBuffer,
+            vertexBufferLayout,
+        };
+    }
+
+    /**
+     * A map between source code and the corresponding render pipeline,
+     * preventing a new compilation of the shader for each mounted element.
+     *
+     * @type {Map<string, GPURenderPipeline>}
+     */
+    const cachedPipelines = new Map();
 </script>
 
 <script>
@@ -45,10 +102,6 @@
 
     /** @type {HTMLCanvasElement} */
     let canvasElement;
-
-    const canRender =
-        typeof navigator !== "undefined" &&
-        typeof navigator.gpu !== "undefined";
 
     /**
      * The width of the canvas element.
@@ -95,7 +148,8 @@
         parameter => parameter.data === "time",
     );
 
-    /** @typedef {{
+    /**
+     * @typedef {{
      *     device: GPUDevice,
      *     context: GPUCanvasContext,
      *     pipeline: GPURenderPipeline,
@@ -112,10 +166,9 @@
      */
     const configPromise = new Promise(resolve =>
         onMount(async () => {
-            if (!canRender) return;
-            const adapter = await navigator.gpu.requestAdapter();
-            if (!adapter) throw new Error("No WebGPU adapter found.");
-            const device = await adapter.requestDevice();
+            const globalConfig = await globalConfigPromise;
+            if (globalConfig === undefined) return;
+            const { device, vertexBuffer, vertexBufferLayout } = globalConfig;
 
             const context = canvasElement.getContext("webgpu");
             if (!context) throw new Error("Failed to get WebGPU context.");
@@ -160,57 +213,45 @@
                 });
             });
 
-            const vertices = new Float32Array([
-                -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1,
-            ]);
-            const vertexBuffer = device.createBuffer({
-                label: "ScreenQuad Vertex Buffer",
-                size: vertices.byteLength,
-                usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
-            });
-            device.queue.writeBuffer(vertexBuffer, 0, vertices);
-            /** @type {GPUVertexBufferLayout} */
-            const vertexBufferLayout = {
-                arrayStride: 8,
-                attributes: [
-                    {
-                        format: "float32x2",
-                        offset: 0,
-                        shaderLocation: 0,
+            /** @type {GPURenderPipeline} */
+            let pipeline;
+            const fragmentCode = await code;
+            const cachedPipeline = cachedPipelines.get(fragmentCode);
+            if (cachedPipeline !== undefined) {
+                pipeline = cachedPipeline;
+            } else {
+                const vertexShaderModule = device.createShaderModule({
+                    label: "Vertex Shader",
+                    // No-op vertex shader
+                    code: `
+                        @vertex
+                        fn vertexMain(
+                            @location(0) pos: vec2f,
+                        ) -> @builtin(position) vec4<f32> {
+                            return vec4<f32>(pos, 0.0, 1.0);
+                        }
+                    `,
+                });
+                const fragmentShaderModule = device.createShaderModule({
+                    label: "Fragment Shader",
+                    code: await code,
+                });
+                pipeline = device.createRenderPipeline({
+                    label: "Pipeline",
+                    layout: "auto",
+                    vertex: {
+                        module: vertexShaderModule,
+                        entryPoint: "vertexMain",
+                        buffers: [vertexBufferLayout],
                     },
-                ],
-            };
-
-            const vertexShaderModule = device.createShaderModule({
-                label: "Vertex Shader",
-                // No-op vertex shader
-                code: `
-                @vertex
-                fn vertexMain(
-                    @location(0) pos: vec2f,
-                ) -> @builtin(position) vec4<f32> {
-                    return vec4<f32>(pos, 0.0, 1.0);
-                }
-            `,
-            });
-            const fragmentShaderModule = device.createShaderModule({
-                label: "Vertex Shader",
-                code: await code,
-            });
-            const pipeline = device.createRenderPipeline({
-                label: "Pipeline",
-                layout: "auto",
-                vertex: {
-                    module: vertexShaderModule,
-                    entryPoint: "vertexMain",
-                    buffers: [vertexBufferLayout],
-                },
-                fragment: {
-                    module: fragmentShaderModule,
-                    entryPoint: "fragmentMain",
-                    targets: [{ format: canvasFormat }],
-                },
-            });
+                    fragment: {
+                        module: fragmentShaderModule,
+                        entryPoint: "fragmentMain",
+                        targets: [{ format: canvasFormat }],
+                    },
+                });
+                cachedPipelines.set(fragmentCode, pipeline);
+            }
 
             const bindGroup = device.createBindGroup({
                 label: "Shader Bind Group",
