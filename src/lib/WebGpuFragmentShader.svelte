@@ -120,9 +120,6 @@
      */
     export let height = undefined;
 
-    let hide = true;
-    export let fadeInDuration = 0;
-
     /**
      * The WGSL source code of the fragment shader to load. The entry point is `fragmentMain`.
      *
@@ -268,7 +265,6 @@
                 ],
             });
 
-            requestIdleCallback(() => (hide = false));
             resolve({
                 device,
                 context,
@@ -420,8 +416,6 @@
 <BaseFragmentShader
     {width}
     {height}
-    {hide}
-    {fadeInDuration}
     {canRender}
     maxSize={maxTextureSize}
     {hasTimeParameter}

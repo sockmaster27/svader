@@ -105,9 +105,6 @@
      */
     export let height = undefined;
 
-    let hide = true;
-    export let fadeInDuration = 0;
-
     /**
      * The GLSL ES source code of the fragment shader to load.
      *
@@ -216,7 +213,6 @@
             );
             gl.enableVertexAttribArray(vertexAttributePosition);
 
-            requestIdleCallback(() => (hide = false));
             resolve({ gl, shaderProgram });
         }),
     );
@@ -430,8 +426,6 @@
 <BaseFragmentShader
     {width}
     {height}
-    {hide}
-    {fadeInDuration}
     {canRender}
     maxSize={maxTextureSize}
     offsetFromBottom
