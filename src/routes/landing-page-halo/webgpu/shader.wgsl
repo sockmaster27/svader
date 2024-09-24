@@ -33,7 +33,7 @@ fn halo(pos: vec2f, center: vec2f, radius: f32, side_length: f32) -> f32 {
 
 
 @fragment
-fn fragmentMain(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
+fn main(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
     let pos = raw_pos.xy + offset;
 
     let screen_center = resolution / 2.0;

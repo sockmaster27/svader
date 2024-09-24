@@ -11,7 +11,7 @@ fn random(pos: vec2f) -> f32 {
 
 
 @fragment
-fn fragmentMain(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
+fn main(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
     let pos = raw_pos.xy + offset;
 
     // Set up the tweakable parameters.

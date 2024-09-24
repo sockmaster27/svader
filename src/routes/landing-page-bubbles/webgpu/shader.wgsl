@@ -34,7 +34,7 @@ fn bubble(pos: vec2f, center: vec2f, radius: f32, random_seed: f32) -> f32 {
 
 
 @fragment
-fn fragmentMain(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
+fn main(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
     let pos = raw_pos.xy + offset;
 
     // Break the screen into square tiles with a width of 300 CSS pixels each.

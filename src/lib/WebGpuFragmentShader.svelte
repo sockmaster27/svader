@@ -121,7 +121,7 @@
     export let height = undefined;
 
     /**
-     * The WGSL source code of the fragment shader to load. The entry point is `fragmentMain`.
+     * The WGSL source code of the fragment shader to load. The entry point is the `main` function.
      *
      * Can optionally be a promise that resolves to the source code.
      *
@@ -242,7 +242,7 @@
                     },
                     fragment: {
                         module: fragmentShaderModule,
-                        entryPoint: "fragmentMain",
+                        entryPoint: "main",
                         targets: [{ format: canvasFormat }],
                     },
                 });
