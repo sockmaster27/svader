@@ -7,7 +7,7 @@
 
 # Svader
 
-Easily create fragment shaders for Svelte apps using WebGL and WebGPU.
+Create GPU-rendered Svelte components with WebGL and WebGPU fragment shaders.
 
 ## What is a fragment shader?
 
