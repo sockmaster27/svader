@@ -30,8 +30,8 @@ export const pixelScale =
  *
  * @template A
  * @template B
- * @param {A[]} a
- * @param {B[]} b
+ * @param {readonly A[]} a
+ * @param {readonly B[]} b
  * @returns {[A, B][]}
  */
 export function zip(a, b) {

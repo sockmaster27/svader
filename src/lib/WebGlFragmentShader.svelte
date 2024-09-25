@@ -122,7 +122,7 @@
      * However, the `data` property cannot change its type,
      * or transition between different types of builtin data.
      *
-     * @type {Parameter[]}
+     * @type {readonly Parameter[]}
      */
     export let parameters = [];
 
@@ -341,7 +341,7 @@
     }
 
     /**
-     * @param {Parameter[]} parameters
+     * @param {readonly Parameter[]} parameters
      */
     async function updateParameters(parameters) {
         const { gl, shaderProgram } = await configPromise;
