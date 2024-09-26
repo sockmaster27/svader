@@ -44,10 +44,15 @@
      * }} GlobalConfig
      */
 
-    /** @type {Promise<GlobalConfig | undefined>} */
+    /**
+     * A promise that resolves when the necessary global initialization has happened.
+     * Resolves to `null` iff {@linkcode canRender} is `false`.
+     *
+     * @type {Promise<GlobalConfig | null>}
+     */
     const globalConfigPromise = globalInit();
     async function globalInit() {
-        if (!canRender) return;
+        if (!canRender) return null;
         const adapter = await navigator.gpu.requestAdapter();
         if (!adapter) throw new Error("No WebGPU adapter found.");
 
@@ -93,12 +98,14 @@
 <script>
     import { zip } from "./utils.js";
     import BaseFragmentShader from "./BaseFragmentShader.svelte";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
 
     const maxTextureSize = 4096;
 
-    /** @type {() => Promise<void>} */
+    /** @type {() => void} */
     let requestRender;
+    /** @type {() => void} */
+    let cancelRender;
 
     /** @type {HTMLCanvasElement} */
     let canvasElement;
@@ -164,7 +171,7 @@
     const configPromise = new Promise(resolve =>
         onMount(async () => {
             const globalConfig = await globalConfigPromise;
-            if (globalConfig === undefined) return;
+            if (globalConfig === null) return;
             const { device, vertexBuffer, vertexBufferLayout } = globalConfig;
 
             const context = canvasElement.getContext("webgpu");
@@ -249,20 +256,11 @@
                 cachedPipelines.set(fragmentCode, pipeline);
             }
 
-            const bindGroup = device.createBindGroup({
-                label: "Shader Bind Group",
-                layout: pipeline.getBindGroupLayout(0),
-                entries: [
-                    ...zip(parameters, parameterBuffers).map(
-                        ([parameter, buffer]) => ({
-                            binding: parameter.binding,
-                            resource: {
-                                buffer,
-                            },
-                        }),
-                    ),
-                ],
-            });
+            const bindGroup = createBindGroup(
+                device,
+                pipeline,
+                parameterBuffers,
+            );
 
             resolve({
                 device,
@@ -401,15 +399,87 @@
      * @param {readonly Parameter[]} parameters
      */
     async function updateParameters(parameters) {
-        const { device, parameterBuffers } = await configPromise;
+        const config = await configPromise;
+        const { device, pipeline, parameterBuffers } = config;
 
-        for (const [parameter, buffer] of zip(parameters, parameterBuffers))
-            if (!isBuiltinParameter(parameter))
-                device.queue.writeBuffer(buffer, 0, parameter.data);
+        let shouldUpdateBindGroup = false;
+        parameters.forEach((parameter, i) => {
+            if (isBuiltinParameter(parameter)) return;
+
+            const isStorage = parameter.storage ?? false;
+            const storageBufferSizeChanged =
+                isStorage &&
+                parameter.data.byteLength !== parameterBuffers[i].size;
+            if (storageBufferSizeChanged) {
+                parameterBuffers[i].destroy();
+                parameterBuffers[i] = createParameterBuffer(
+                    device,
+                    parameter,
+                    parameter.data.byteLength,
+                );
+                shouldUpdateBindGroup = true;
+            }
+
+            device.queue.writeBuffer(parameterBuffers[i], 0, parameter.data);
+        });
+
+        if (shouldUpdateBindGroup) {
+            config.bindGroup = createBindGroup(
+                device,
+                pipeline,
+                parameterBuffers,
+            );
+        }
 
         requestRender();
     }
     $: updateParameters(parameters);
+
+    /**
+     * @param {GPUDevice} device
+     * @param {Parameter} parameter
+     * @param {number} byteLength
+     */
+    function createParameterBuffer(device, parameter, byteLength) {
+        return device.createBuffer({
+            label: `${parameter.label} Parameter`,
+            size: byteLength,
+            usage:
+                GPUBufferUsage.COPY_DST |
+                ((parameter.storage ?? false)
+                    ? GPUBufferUsage.STORAGE
+                    : GPUBufferUsage.UNIFORM),
+        });
+    }
+
+    /**
+     * @param {GPUDevice} device
+     * @param {GPURenderPipeline} pipeline
+     * @param {GPUBuffer[]} parameterBuffers
+     */
+    function createBindGroup(device, pipeline, parameterBuffers) {
+        return device.createBindGroup({
+            label: "Shader Bind Group",
+            layout: pipeline.getBindGroupLayout(0),
+            entries: [
+                ...zip(parameters, parameterBuffers).map(
+                    ([parameter, buffer]) => ({
+                        binding: parameter.binding,
+                        resource: {
+                            buffer,
+                        },
+                    }),
+                ),
+            ],
+        });
+    }
+
+    onDestroy(async () => {
+        const { context, parameterBuffers } = await configPromise;
+        cancelRender();
+        context.unconfigure();
+        parameterBuffers.forEach(b => b.destroy());
+    });
 </script>
 
 <BaseFragmentShader
@@ -425,6 +495,7 @@
     {updateTime}
     bind:canvasElement
     bind:requestRender
+    bind:cancelRender
     {...$$restProps}
 >
     <slot></slot>

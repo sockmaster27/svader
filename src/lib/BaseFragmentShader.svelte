@@ -100,19 +100,24 @@
      */
     $: canvasHeight = canvasSize?.[0]?.blockSize;
 
-    let renderRequested = false;
+    /**
+     * The handle returned by {@linkcode requestAnimationFrame}.
+     * `null` if no render pass has been requested.
+     *
+     * @type {number | null}
+     */
+    let requestHandle = null;
     /** @type {(() => void)[]} */
     const renderCallbacks = [];
     /**
      * Requests a render pass to be executed on the GPU at the next animation frame.
      */
-    export async function requestRender() {
+    export function requestRender() {
         if (!canRender) return;
 
-        if (renderRequested) return;
-        renderRequested = true;
+        if (requestHandle !== null) return;
 
-        requestAnimationFrame(async () => {
+        requestHandle = requestAnimationFrame(async () => {
             renderCallbacks.forEach(callback => callback());
             renderCallbacks.length = 0;
 
@@ -121,10 +126,19 @@
 
             render();
 
-            renderRequested = false;
+            requestHandle = null;
 
             if (hasTimeParameter) requestRender();
         });
+    }
+    /**
+     * Cancel any requested render pass.
+     */
+    export function cancelRender() {
+        if (requestHandle !== null) {
+            cancelAnimationFrame(requestHandle);
+            requestHandle = null;
+        }
     }
 
     /**

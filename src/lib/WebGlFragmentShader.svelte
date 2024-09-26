@@ -74,14 +74,16 @@
 </script>
 
 <script>
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
 
     import BaseFragmentShader from "./BaseFragmentShader.svelte";
 
     const maxTextureSize = 4096;
 
-    /** @type {() => Promise<void>} */
+    /** @type {() => void} */
     let requestRender;
+    /** @type {() => void} */
+    let cancelRender;
 
     /** @type {HTMLCanvasElement} */
     let canvasElement;
@@ -421,6 +423,10 @@
         requestRender();
     }
     $: updateParameters(parameters);
+
+    onDestroy(() => {
+        cancelRender();
+    });
 </script>
 
 <BaseFragmentShader
@@ -438,6 +444,7 @@
     {updateTime}
     bind:canvasElement
     bind:requestRender
+    bind:cancelRender
     {...$$restProps}
 >
     <slot></slot>
