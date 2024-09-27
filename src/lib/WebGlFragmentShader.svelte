@@ -425,9 +425,7 @@
     $: updateParameters(parameters);
 
     onDestroy(async () => {
-        const { gl } = await configPromise;
         cancelRender();
-        gl.getExtension("WEBGL_lose_context")?.loseContext();
     });
 </script>
 
