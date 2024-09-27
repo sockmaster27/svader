@@ -1,5 +1,6 @@
 <ol>
     <li><a href="hello-world/">Hello world</a></li>
+    <li><a href="remount/">Remounting canvas</a></li>
     <li><a href="oversized-canvas/">Oversized canvas</a></li>
     <li><a href="logo/">Logo</a></li>
     <li><a href="landing-page-bubbles/">Landing page with bubbles</a></li>
