@@ -1,6 +1,6 @@
 <script context="module">
     /**
-     * The commonly used data that the component can pass to the shader.
+     * The commonly used parameter data that the component can pass to the shader.
      *
      * - **resolution**: A `vec2` of the canvas width and height in physical device pixels.
      *
@@ -17,7 +17,7 @@
     /**
      * @typedef {{
      *     name: string,
-     *     data: BuiltinData,
+     *     value: BuiltinData,
      * }} BuiltinParameter
      *
      * @typedef {{
@@ -25,34 +25,34 @@
      * } & (
      * | {
      *     type: "float" | "int" | "uint",
-     *     data: number,
+     *     value: number,
      * }
      * | {
      *     type: "vec2" | "ivec2" | "uvec2",
-     *     data: readonly [number, number],
+     *     value: readonly [number, number],
      * }
      * | {
      *     type: "vec3" | "ivec3" | "uvec3",
-     *     data: readonly [number, number, number],
+     *     value: readonly [number, number, number],
      * }
      * | {
      *     type: "vec4" | "ivec4" | "uvec4",
-     *     data: readonly [number, number, number, number],
+     *     value: readonly [number, number, number, number],
      * }
      * | {
      *     type: "vec4" | "ivec4" | "uvec4",
-     *     data: readonly [number, number, number, number],
+     *     value: readonly [number, number, number, number],
      * }
      * | {
      *     type: "mat2",
-     *     data: readonly [
+     *     value: readonly [
      *         number, number,
      *         number, number,
      *     ],
      * }
      * | {
      *     type: "mat3",
-     *     data: readonly [
+     *     value: readonly [
      *         number, number, number,
      *         number, number, number,
      *         number, number, number,
@@ -60,7 +60,7 @@
      * }
      * | {
      *     type: "mat4",
-     *     data: readonly [
+     *     value: readonly [
      *         number, number, number, number,
      *         number, number, number, number,
      *         number, number, number, number,
@@ -129,7 +129,7 @@
     export let parameters = [];
 
     const hasTimeParameter = parameters.some(
-        parameter => parameter.data === "time",
+        parameter => parameter.value === "time",
     );
 
     /** @typedef {{
@@ -241,7 +241,7 @@
         const { gl, shaderProgram } = await configPromise;
 
         const resolutionParam = parameters.find(
-            parameter => parameter.data === "resolution",
+            parameter => parameter.value === "resolution",
         );
         if (resolutionParam !== undefined) {
             const uniformPosition = gl.getUniformLocation(
@@ -263,7 +263,7 @@
         const { gl, shaderProgram } = await configPromise;
 
         const offsetParam = parameters.find(
-            parameter => parameter.data === "offset",
+            parameter => parameter.value === "offset",
         );
         if (offsetParam !== undefined) {
             const uniformPosition = gl.getUniformLocation(
@@ -284,7 +284,7 @@
         const { gl, shaderProgram } = await configPromise;
 
         const scaleParam = parameters.find(
-            parameter => parameter.data === "scale",
+            parameter => parameter.value === "scale",
         );
         if (scaleParam !== undefined) {
             const uniformPosition = gl.getUniformLocation(
@@ -305,7 +305,7 @@
         const { gl, shaderProgram } = await configPromise;
 
         const timeParam = parameters.find(
-            parameter => parameter.data === "time",
+            parameter => parameter.value === "time",
         );
         if (timeParam !== undefined) {
             const uniformPosition = gl.getUniformLocation(
@@ -325,10 +325,10 @@
      * @returns {parameter is BuiltinParameter}
      */
     function isBuiltinParameter(parameter) {
-        const shouldBeBuiltin = typeof parameter.data === "string";
+        const shouldBeBuiltin = typeof parameter.value === "string";
         if (!shouldBeBuiltin) return false;
 
-        switch (parameter.data) {
+        switch (parameter.value) {
             case "resolution":
             case "offset":
             case "scale":
@@ -356,60 +356,60 @@
                 );
                 switch (parameter.type) {
                     case "float":
-                        gl.uniform1f(uniformPosition, parameter.data);
+                        gl.uniform1f(uniformPosition, parameter.value);
                         break;
                     case "vec2":
-                        gl.uniform2fv(uniformPosition, parameter.data);
+                        gl.uniform2fv(uniformPosition, parameter.value);
                         break;
                     case "vec3":
-                        gl.uniform3fv(uniformPosition, parameter.data);
+                        gl.uniform3fv(uniformPosition, parameter.value);
                         break;
                     case "vec4":
-                        gl.uniform4fv(uniformPosition, parameter.data);
+                        gl.uniform4fv(uniformPosition, parameter.value);
                         break;
                     case "int":
-                        gl.uniform1i(uniformPosition, parameter.data);
+                        gl.uniform1i(uniformPosition, parameter.value);
                         break;
                     case "ivec2":
-                        gl.uniform2iv(uniformPosition, parameter.data);
+                        gl.uniform2iv(uniformPosition, parameter.value);
                         break;
                     case "ivec3":
-                        gl.uniform3iv(uniformPosition, parameter.data);
+                        gl.uniform3iv(uniformPosition, parameter.value);
                         break;
                     case "ivec4":
-                        gl.uniform4iv(uniformPosition, parameter.data);
+                        gl.uniform4iv(uniformPosition, parameter.value);
                         break;
                     case "uint":
-                        gl.uniform1ui(uniformPosition, parameter.data);
+                        gl.uniform1ui(uniformPosition, parameter.value);
                         break;
                     case "uvec2":
-                        gl.uniform2uiv(uniformPosition, parameter.data);
+                        gl.uniform2uiv(uniformPosition, parameter.value);
                         break;
                     case "uvec3":
-                        gl.uniform3uiv(uniformPosition, parameter.data);
+                        gl.uniform3uiv(uniformPosition, parameter.value);
                         break;
                     case "uvec4":
-                        gl.uniform4uiv(uniformPosition, parameter.data);
+                        gl.uniform4uiv(uniformPosition, parameter.value);
                         break;
                     case "mat2":
                         gl.uniformMatrix2fv(
                             uniformPosition,
                             false,
-                            parameter.data,
+                            parameter.value,
                         );
                         break;
                     case "mat3":
                         gl.uniformMatrix3fv(
                             uniformPosition,
                             false,
-                            parameter.data,
+                            parameter.value,
                         );
                         break;
                     case "mat4":
                         gl.uniformMatrix4fv(
                             uniformPosition,
                             false,
-                            parameter.data,
+                            parameter.value,
                         );
                         break;
                     default:

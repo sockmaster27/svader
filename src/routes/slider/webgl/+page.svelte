@@ -15,20 +15,20 @@
                 parameters={[
                     {
                         name: "u_resolution",
-                        data: "resolution",
+                        value: "resolution",
                     },
                     {
                         name: "u_offset",
-                        data: "offset",
+                        value: "offset",
                     },
                     {
                         name: "u_scale",
-                        data: "scale",
+                        value: "scale",
                     },
                     {
                         name: "u_value",
                         type: "float",
-                        data: val,
+                        value: val,
                     },
                 ]}
             ></WebGlShader>
