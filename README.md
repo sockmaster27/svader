@@ -55,6 +55,8 @@ If you're unsure about what to use, see the [WebGL vs. WebGPU](#webgl-vs-webgpu)
 
 The following is a minimal example of a WebGL fragment shader component.
 
+[**View in REPL**](https://svelte.dev/repl/3e4a38bca5ca49fa94e1106a841063d5?version=4.2.19)
+
 ```svelte
 <script>
     import { WebGlShader } from "svader";
@@ -157,6 +159,8 @@ To use these, the `value` property of the parameter object must be set to a stri
 ### WebGPU
 
 The following is a minimal example of a WebGPU fragment shader component.
+
+[**View in REPL**](https://svelte.dev/repl/498446d091964bb199e6a88bce90feae?version=4.2.19)
 
 ```svelte
 <script>
