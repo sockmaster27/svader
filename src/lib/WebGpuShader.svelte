@@ -1,6 +1,6 @@
 <script context="module">
     /**
-     * The commonly used data that the component can pass to the shader.
+     * The commonly used parameter data that the component can pass to the shader.
      *
      * - **resolution**: A `vec2f` of the canvas width and height in physical device pixels.
      *
@@ -18,14 +18,14 @@
      * @typedef {{
      *     label: string,
      *     binding: number,
-     *     data: BuiltinData,
+     *     value: BuiltinData,
      *     storage?: boolean,
      * }} BuiltinParameter
      *
      * @typedef {{
      *     label: string,
      *     binding: number,
-     *     data: BufferSource,
+     *     value: BufferSource,
      *     storage?: boolean,
      * }} NonBuiltinParameter
      *
@@ -140,8 +140,8 @@
      * Optional list of parameters to be passed to the shader.
      *
      * The list must not be updated after the component is initially mounted,
-     * with the exception of the `data` property.
-     * However, the `data` property cannot change its type,
+     * with the exception of the `value` property.
+     * However, the `value` property cannot change its type,
      * or transition between different types of builtin data.
      *
      * @type {readonly Parameter[]}
@@ -149,7 +149,7 @@
     export let parameters = [];
 
     const hasTimeParameter = parameters.some(
-        parameter => parameter.data === "time",
+        parameter => parameter.value === "time",
     );
 
     /**
@@ -188,7 +188,7 @@
                 /** @type {number} */
                 let byteLength;
                 if (isBuiltinParameter(parameter))
-                    switch (parameter.data) {
+                    switch (parameter.value) {
                         case "resolution":
                         case "offset":
                             byteLength = new Float32Array(2).byteLength;
@@ -200,10 +200,10 @@
                         default:
                             throw new Error(
                                 // @ts-expect-error: Ensure exhaustive match
-                                `Unknown builtin data: ${parameter.data}`,
+                                `Unknown builtin data: ${parameter.value}`,
                             );
                     }
-                else byteLength = parameter.data.byteLength;
+                else byteLength = parameter.value.byteLength;
 
                 return device.createBuffer({
                     label: `${parameter.label} Parameter`,
@@ -303,7 +303,7 @@
         const { device, parameterBuffers } = await configPromise;
 
         const resolutionBuffer = parameterBuffers.find(
-            (_, i) => parameters[i].data === "resolution",
+            (_, i) => parameters[i].value === "resolution",
         );
         if (resolutionBuffer !== undefined) {
             const resolutionArray = new Float32Array([
@@ -325,7 +325,7 @@
         const { device, parameterBuffers } = await configPromise;
 
         const offsetBuffer = parameterBuffers.find(
-            (_, i) => parameters[i].data === "offset",
+            (_, i) => parameters[i].value === "offset",
         );
         if (offsetBuffer !== undefined) {
             const offsetArray = new Float32Array([offsetX, offsetY]);
@@ -343,7 +343,7 @@
         const { device, parameterBuffers } = await configPromise;
 
         const scaleBuffer = parameterBuffers.find(
-            (_, i) => parameters[i].data === "scale",
+            (_, i) => parameters[i].value === "scale",
         );
         if (scaleBuffer !== undefined) {
             const scaleArray = new Float32Array([scale]);
@@ -361,7 +361,7 @@
         const { device, parameterBuffers } = await configPromise;
 
         const timeBuffer = parameterBuffers.find(
-            (_, i) => parameters[i].data === "time",
+            (_, i) => parameters[i].value === "time",
         );
         if (timeBuffer !== undefined) {
             const scaleArray = new Float32Array([time]);
@@ -378,10 +378,10 @@
      * @returns {parameter is BuiltinParameter}
      */
     function isBuiltinParameter(parameter) {
-        const shouldBeBuiltin = typeof parameter.data === "string";
+        const shouldBeBuiltin = typeof parameter.value === "string";
         if (!shouldBeBuiltin) return false;
 
-        switch (parameter.data) {
+        switch (parameter.value) {
             case "resolution":
             case "offset":
             case "scale":
@@ -390,7 +390,7 @@
             default:
                 throw new Error(
                     // @ts-expect-error: Match should be exhaustive, but non-TS users should get a helpful runtime-error.
-                    `Unknown builtin parameter: ${parameter.data}`,
+                    `Unknown builtin parameter: ${parameter.value}`,
                 );
         }
     }
@@ -409,18 +409,18 @@
             const isStorage = parameter.storage ?? false;
             const storageBufferSizeChanged =
                 isStorage &&
-                parameter.data.byteLength !== parameterBuffers[i].size;
+                parameter.value.byteLength !== parameterBuffers[i].size;
             if (storageBufferSizeChanged) {
                 parameterBuffers[i].destroy();
                 parameterBuffers[i] = createParameterBuffer(
                     device,
                     parameter,
-                    parameter.data.byteLength,
+                    parameter.value.byteLength,
                 );
                 shouldUpdateBindGroup = true;
             }
 
-            device.queue.writeBuffer(parameterBuffers[i], 0, parameter.data);
+            device.queue.writeBuffer(parameterBuffers[i], 0, parameter.value);
         });
 
         if (shouldUpdateBindGroup) {

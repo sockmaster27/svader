@@ -83,11 +83,11 @@ The following is a minimal example of a WebGL fragment shader component.
     parameters={[
         {
             name: "u_resolution",
-            data: "resolution",
+            value: "resolution",
         },
         {
             name: "u_offset",
-            data: "offset",
+            value: "offset",
         },
     ]}
 >
@@ -125,10 +125,10 @@ The `parameters` property is an array of objects with the following properties:
     This must match the name of the parameter in the shader code.
 
 -   **`type`**: The type of the uniform parameter as it is written in the shader code, e.g. `"float"`.
-    If the `data` property is a piece of [builtin data](#webgl-builtin-data), such as `"resolution"`,
+    If the `value` property is a piece of [builtin data](#webgl-builtin-data), such as `"resolution"`,
     the `type` will be determined automatically and should not be set.
 
--   **`data`**: The value of the uniform parameter, or a string specifying a piece of [builtin data](#webgl-builtin-data).
+-   **`value`**: The value of the uniform parameter, or a string specifying a piece of [builtin data](#webgl-builtin-data).
     If not builtin data, the type of this property must correspond to the `type` property, such that:
     -   **`float`, `int`, `uint`** is a `number`,
     -   **`vecN`, `ivecN`, `uvecN`** is a `number[]` with a length of `N`, e.g. `vec2` -> `[1.2, 3.4]`.
@@ -137,7 +137,7 @@ The `parameters` property is an array of objects with the following properties:
 ##### WebGL builtin data
 
 Some types of uniforms are used very often. These are implemented in Svader itself, and referred to as _builtin data_.
-To use these, the `data` property of the parameter object must be set to a string matching one of the following:
+To use these, the `value` property of the parameter object must be set to a string matching one of the following:
 
 -   **`"resolution"`**: A `vec2` of the canvas width and height in physical device pixels.
 
@@ -183,12 +183,12 @@ The following is a minimal example of a WebGPU fragment shader component.
         {
             label: "Resolution",
             binding: 0,
-            data: "resolution",
+            value: "resolution",
         },
         {
             label: "Offset",
             binding: 1,
-            data: "offset",
+            value: "offset",
         },
     ]}
 >
@@ -214,7 +214,7 @@ In WGSL, these `var<uniform>`s are the primary way to pass in parameters to the 
 These need to be passed in via the `parameters` property of the `<WebGpuShader>` component.
 In this case, we need to pass in two uniforms: `resolution` and `offset`.
 Since these specific parameters are very commonly used, they are specially implemented in Svader
-such that the `data` property of each parameter can simply be set to `"resolution"` and `"offset"` respectively.
+such that the `value` property of each parameter can simply be set to `"resolution"` and `"offset"` respectively.
 
 Lastly, the `<WebGpuShader>` component accepts a fallback slot, which is rendered when the browser cannot render the shader.
 
@@ -234,7 +234,7 @@ The `parameters` property is an array of objects with the following properties:
 
     the `binding` property should be `42`.
 
--   **`data`**: The value of the parameter, or a string specifying a piece of [builtin data](#webgpu-builtin-data).
+-   **`value`**: The value of the parameter, or a string specifying a piece of [builtin data](#webgpu-builtin-data).
     If not builtin data, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
     For example, to pass in a number to an `f32` parameter, it can be constructed like `new Float32Array([myNumberValue])`.
 
@@ -257,7 +257,7 @@ The `parameters` property is an array of objects with the following properties:
 ##### WebGPU builtin data
 
 Some types of inputs are used very often. These are implemented in Svader itself, and referred to as _builtin data_.
-To use these, the `data` property of the parameter object must be set to a string matching one of the following:
+To use these, the `value` property of the parameter object must be set to a string matching one of the following:
 
 -   **`"resolution"`**: A `vec2f` of the canvas width and height in physical device pixels.
 

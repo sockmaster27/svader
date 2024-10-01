@@ -32,22 +32,22 @@
                 {
                     label: "Offset",
                     binding: 0,
-                    data: "offset",
+                    value: "offset",
                 },
                 {
                     label: "Scale",
                     binding: 1,
-                    data: "scale",
+                    value: "scale",
                 },
                 {
                     label: "Time",
                     binding: 2,
-                    data: "time",
+                    value: "time",
                 },
                 {
                     label: "Color",
                     binding: 3,
-                    data: new Float32Array(color),
+                    value: new Float32Array(color),
                 },
             ]}
         ></WebGpuShader>

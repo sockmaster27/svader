@@ -31,24 +31,24 @@
             parameters={[
                 {
                     name: "u_resolution",
-                    data: "resolution",
+                    value: "resolution",
                 },
                 {
                     name: "u_offset",
-                    data: "offset",
+                    value: "offset",
                 },
                 {
                     name: "u_scale",
-                    data: "scale",
+                    value: "scale",
                 },
                 {
                     name: "u_time",
-                    data: "time",
+                    value: "time",
                 },
                 {
                     name: "u_color",
                     type: "vec3",
-                    data: color,
+                    value: color,
                 },
             ]}
         ></WebGlShader>

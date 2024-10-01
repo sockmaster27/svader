@@ -16,22 +16,22 @@
                     {
                         label: "Resolution",
                         binding: 0,
-                        data: "resolution",
+                        value: "resolution",
                     },
                     {
                         label: "Offset",
                         binding: 1,
-                        data: "offset",
+                        value: "offset",
                     },
                     {
                         label: "Scale",
                         binding: 2,
-                        data: "scale",
+                        value: "scale",
                     },
                     {
                         label: "Value",
                         binding: 3,
-                        data: new Float32Array([val]),
+                        value: new Float32Array([val]),
                     },
                 ]}
             ></WebGpuShader>

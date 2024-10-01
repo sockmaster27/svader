@@ -11,12 +11,12 @@
         {
             label: "Resolution",
             binding: 0,
-            data: "resolution",
+            value: "resolution",
         },
         {
             label: "Offset",
             binding: 1,
-            data: "offset",
+            value: "offset",
         },
     ]}
 >
