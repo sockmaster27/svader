@@ -46,10 +46,10 @@ If you're unsure about what to use, see the [WebGL vs. WebGPU](#webgl-vs-webgpu)
 
 -   [WebGL](#webgl)
     -   [WebGL parameters](#webgl-parameters)
-        -   [WebGL builtin values](#webgl-builtin-values)
+        -   [WebGL built-in values](#webgl-built-in-values)
 -   [WebGPU](#webgpu)
     -   [WebGPU parameters](#webgpu-parameters)
-        -   [WebGPU builtin values](#webgpu-builtin-values)
+        -   [WebGPU built-in values](#webgpu-built-in-values)
 
 ### WebGL
 
@@ -125,18 +125,18 @@ The `parameters` property is an array of objects with the following properties:
     This must match the name of the parameter in the shader code.
 
 -   **`type`**: The type of the uniform parameter as it is written in the shader code, e.g. `"float"`.
-    If the `value` property is a [builtin value](#webgl-builtin-values), such as `"resolution"`,
+    If the `value` property is a [built-in value](#webgl-built-in-values), such as `"resolution"`,
     the `type` will be determined automatically and should not be set.
 
--   **`value`**: The value of the uniform parameter, or a string specifying a [builtin value](#webgl-builtin-values).
-    If not a builtin value, the type of this property must correspond to the `type` property, such that:
+-   **`value`**: The value of the uniform parameter, or a string specifying a [built-in value](#webgl-built-in-values).
+    If not a built-in value, the type of this property must correspond to the `type` property, such that:
     -   **`float`, `int`, `uint`** is a `number`,
     -   **`vecN`, `ivecN`, `uvecN`** is a `number[]` with a length of `N`, e.g. `vec2` -> `[1.2, 3.4]`.
     -   **`matN`** is a `number[]` with a length of `N * N`, e.g. `mat2` -> `[1, 2, 3, 4]`.
 
-##### WebGL builtin values
+##### WebGL built-in values
 
-Some types of uniforms are used very often. These are implemented in Svader itself, and referred to as _builtin values_.
+Some types of uniforms are used very often. These are implemented in Svader itself, and referred to as _built-in values_.
 To use these, the `value` property of the parameter object must be set to a string matching one of the following:
 
 -   **`"resolution"`**: A `vec2` of the canvas width and height in physical device pixels.
@@ -234,8 +234,8 @@ The `parameters` property is an array of objects with the following properties:
 
     the `binding` property should be `42`.
 
--   **`value`**: The value of the parameter, or a string specifying a [builtin value](#webgpu-builtin-values).
-    If not a builtin value, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
+-   **`value`**: The value of the parameter, or a string specifying a [built-in value](#webgpu-built-in-values).
+    If not a built-in value, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
     For example, to pass in a number to an `f32` parameter, it can be constructed like `new Float32Array([myNumberValue])`.
 
 -   **`storage`**: [Optional - defaults to `false`] Whether the parameter is a storage variable rather than a uniform variable.
@@ -254,9 +254,9 @@ The `parameters` property is an array of objects with the following properties:
     it should be `true`.
     Note that Svader currently only supports `var<storage, read>` and not `var<storage, read_write>`.
 
-##### WebGPU builtin values
+##### WebGPU built-in values
 
-Some types of inputs are used very often. These are implemented in Svader itself, and referred to as _builtin values_.
+Some types of inputs are used very often. These are implemented in Svader itself, and referred to as _built-in values_.
 To use these, the `value` property of the parameter object must be set to a string matching one of the following:
 
 -   **`"resolution"`**: A `vec2f` of the canvas width and height in physical device pixels.

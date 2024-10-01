@@ -122,7 +122,7 @@
      * The list must not be updated after the component is initially mounted,
      * with the exception of the {@linkcode Parameter.value} property.
      * However, the {@linkcode Parameter.value} property cannot change its type,
-     * or transition between different types of builtin values.
+     * or transition between different types of built-in values.
      *
      * @type {readonly Parameter[]}
      */
@@ -319,7 +319,7 @@
     }
 
     /**
-     * Checks if the given parameter has a value that is builtin.
+     * Checks if the given parameter has a value that is built-in.
      *
      * @param {Parameter} parameter
      * @returns {parameter is BuiltinParameter}
@@ -337,7 +337,7 @@
             default:
                 throw new Error(
                     // @ts-expect-error: Match should be exhaustive, but non-TS users should get a helpful runtime-error.
-                    `Unknown builtin value: ${parameter.value}`,
+                    `Unknown built-in value: ${parameter.value}`,
                 );
         }
     }
