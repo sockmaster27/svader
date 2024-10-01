@@ -1,5 +1,5 @@
 <script>
-    import { WebGlFragmentShader } from "$lib/index.js";
+    import { WebGlShader } from "$lib/index.js";
     import shaderCode from "./shader.frag?raw";
 
     const color = /** @type {const} */ ([0.8, 0.3, 0.0]);
@@ -26,7 +26,7 @@
 
 <main>
     <div class="canvas-container">
-        <WebGlFragmentShader
+        <WebGlShader
             code={shaderCode}
             parameters={[
                 {
@@ -51,7 +51,7 @@
                     data: color,
                 },
             ]}
-        ></WebGlFragmentShader>
+        ></WebGlShader>
     </div>
 
     <h1 style:--color={rgbString(...color)}>SVADER</h1>

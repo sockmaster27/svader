@@ -1,5 +1,5 @@
 <script>
-    import { WebGpuFragmentShader } from "$lib/index.js";
+    import { WebGpuShader } from "$lib/index.js";
     import shaderCode from "./shader.wgsl?raw";
 
     // Mount and dismount the component every tick
@@ -12,7 +12,7 @@
 </script>
 
 {#if show}
-    <WebGpuFragmentShader
+    <WebGpuShader
         width="500px"
         height="500px"
         code={shaderCode}
@@ -30,5 +30,5 @@
         ]}
     >
         <div class="fallback">WebGPU not supported in this environment.</div>
-    </WebGpuFragmentShader>
+    </WebGpuShader>
 {/if}

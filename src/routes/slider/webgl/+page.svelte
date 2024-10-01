@@ -1,5 +1,5 @@
 <script>
-    import { WebGlFragmentShader } from "$lib/index.js";
+    import { WebGlShader } from "$lib/index.js";
     import shaderCode from "./shader.frag?raw";
 
     let val = 0.75;
@@ -10,7 +10,7 @@
 
     <span>
         <div class="canvas-container">
-            <WebGlFragmentShader
+            <WebGlShader
                 code={shaderCode}
                 parameters={[
                     {
@@ -31,7 +31,7 @@
                         data: val,
                     },
                 ]}
-            ></WebGlFragmentShader>
+            ></WebGlShader>
         </div>
         <input type="range" min="0" max="1" step="0.01" bind:value={val} />
     </span>

@@ -1,5 +1,5 @@
 <script>
-    import { WebGpuFragmentShader } from "$lib/index.js";
+    import { WebGpuShader } from "$lib/index.js";
     import shaderCode from "./shader.wgsl?raw";
 </script>
 
@@ -15,7 +15,7 @@
 
 <main>
     <div class="canvas-container">
-        <WebGpuFragmentShader
+        <WebGpuShader
             code={shaderCode}
             parameters={[
                 {
@@ -29,7 +29,7 @@
                     data: "offset",
                 },
             ]}
-        ></WebGpuFragmentShader>
+        ></WebGpuShader>
     </div>
 
     <h1>SVADER</h1>

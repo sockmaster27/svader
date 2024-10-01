@@ -57,7 +57,7 @@ The following is a minimal example of a WebGL fragment shader component.
 
 ```svelte
 <script>
-    import { WebGlFragmentShader } from "svader";
+    import { WebGlShader } from "svader";
 
     const shaderCode = `#version 300 es
 
@@ -76,7 +76,7 @@ The following is a minimal example of a WebGL fragment shader component.
     `;
 </script>
 
-<WebGlFragmentShader
+<WebGlShader
     width="500px"
     height="500px"
     code={shaderCode}
@@ -92,7 +92,7 @@ The following is a minimal example of a WebGL fragment shader component.
     ]}
 >
     <div class="fallback">WebGL not supported in this environment.</div>
-</WebGlFragmentShader>
+</WebGlShader>
 ```
 
 This produces the following output:
@@ -110,12 +110,12 @@ What this code does is:
 3. Return the normalized coordinates as the color of the pixel, such that the `x` coordinate becomes the red channel and the `y` coordinate becomes the green channel. The blue channel is always set to 0, and the alpha (opacity) channel is always set to 1 (fully opaque).
 
 In GLES, _uniforms_ are inputs to the function, that are the same for every pixel on the screen.
-These need to be passed in via the `parameters` property of the `<WebGlFragmentShader>` component.
+These need to be passed in via the `parameters` property of the `<WebGlShader>` component.
 In this case, we need to pass in two uniforms: `u_resolution` and `u_offset`.
 Since these specific parameters are very commonly used, they are specially implemented in Svader
 such that the `data` property of each parameter can simply be set to `"resolution"` and `"offset"` respectively.
 
-Lastly, the `<WebGlFragmentShader>` component accepts a fallback slot, which is rendered when the browser cannot render the shader.
+Lastly, the `<WebGlShader>` component accepts a fallback slot, which is rendered when the browser cannot render the shader.
 
 #### WebGL parameters
 
@@ -160,7 +160,7 @@ The following is a minimal example of a WebGPU fragment shader component.
 
 ```svelte
 <script>
-    import { WebGpuFragmentShader } from "svader";
+    import { WebGpuShader } from "svader";
 
     const shaderCode = `
         @group(0) @binding(0) var<uniform> resolution: vec2f;
@@ -175,7 +175,7 @@ The following is a minimal example of a WebGPU fragment shader component.
     `;
 </script>
 
-<WebGpuFragmentShader
+<WebGpuShader
     width="500px"
     height="500px"
     code={shaderCode}
@@ -193,7 +193,7 @@ The following is a minimal example of a WebGPU fragment shader component.
     ]}
 >
     <div class="fallback">WebGPU not supported in this environment.</div>
-</WebGpuFragmentShader>
+</WebGpuShader>
 ```
 
 This produces the following output:
@@ -211,12 +211,12 @@ What this code does is:
 3. Return the normalized coordinates as the color of the pixel, such that the `x` coordinate becomes the red channel and the `y` coordinate becomes the green channel. The blue channel is always set to 0, and the alpha (opacity) channel is always set to 1 (fully opaque).
 
 In WGSL, these `var<uniform>`s are the primary way to pass in parameters to the shader.
-These need to be passed in via the `parameters` property of the `<WebGpuFragmentShader>` component.
+These need to be passed in via the `parameters` property of the `<WebGpuShader>` component.
 In this case, we need to pass in two uniforms: `resolution` and `offset`.
 Since these specific parameters are very commonly used, they are specially implemented in Svader
 such that the `data` property of each parameter can simply be set to `"resolution"` and `"offset"` respectively.
 
-Lastly, the `<WebGpuFragmentShader>` component accepts a fallback slot, which is rendered when the browser cannot render the shader.
+Lastly, the `<WebGpuShader>` component accepts a fallback slot, which is rendered when the browser cannot render the shader.
 
 #### WebGPU parameters
 

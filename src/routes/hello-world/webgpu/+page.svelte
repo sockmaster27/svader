@@ -1,9 +1,9 @@
 <script>
-    import { WebGpuFragmentShader } from "$lib/index.js";
+    import { WebGpuShader } from "$lib/index.js";
     import shaderCode from "./shader.wgsl?raw";
 </script>
 
-<WebGpuFragmentShader
+<WebGpuShader
     width="500px"
     height="500px"
     code={shaderCode}
@@ -21,4 +21,4 @@
     ]}
 >
     <div class="fallback">WebGPU not supported in this environment.</div>
-</WebGpuFragmentShader>
+</WebGpuShader>

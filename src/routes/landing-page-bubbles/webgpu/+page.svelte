@@ -1,5 +1,5 @@
 <script>
-    import { WebGpuFragmentShader } from "$lib/index.js";
+    import { WebGpuShader } from "$lib/index.js";
     import shaderCode from "./shader.wgsl?raw";
 
     const color = /** @type {const} */ ([0.8, 0.3, 0.0]);
@@ -26,7 +26,7 @@
 
 <main>
     <div class="canvas-container">
-        <WebGpuFragmentShader
+        <WebGpuShader
             code={shaderCode}
             parameters={[
                 {
@@ -50,7 +50,7 @@
                     data: new Float32Array(color),
                 },
             ]}
-        ></WebGpuFragmentShader>
+        ></WebGpuShader>
     </div>
 
     <h1 style:--color={rgbString(...color)}>SVADER</h1>

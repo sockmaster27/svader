@@ -1,5 +1,5 @@
 <script>
-    import { WebGlFragmentShader } from "$lib/index.js";
+    import { WebGlShader } from "$lib/index.js";
     import shaderCode from "./shader.frag?raw";
 
     // Mount and dismount the component every tick
@@ -12,7 +12,7 @@
 </script>
 
 {#if show}
-    <WebGlFragmentShader
+    <WebGlShader
         width="500px"
         height="500px"
         code={shaderCode}
@@ -28,5 +28,5 @@
         ]}
     >
         <div class="fallback">WebGL not supported in this environment.</div>
-    </WebGlFragmentShader>
+    </WebGlShader>
 {/if}

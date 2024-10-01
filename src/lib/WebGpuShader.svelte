@@ -97,7 +97,7 @@
 
 <script>
     import { zip } from "./utils.js";
-    import BaseFragmentShader from "./BaseFragmentShader.svelte";
+    import BaseShader from "./BaseShader.svelte";
     import { onDestroy, onMount } from "svelte";
 
     const maxTextureSize = 4096;
@@ -482,7 +482,7 @@
     });
 </script>
 
-<BaseFragmentShader
+<BaseShader
     {width}
     {height}
     {canRender}
@@ -499,4 +499,4 @@
     {...$$restProps}
 >
     <slot></slot>
-</BaseFragmentShader>
+</BaseShader>

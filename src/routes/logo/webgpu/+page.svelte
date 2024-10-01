@@ -1,5 +1,5 @@
 <script>
-    import { WebGpuFragmentShader } from "$lib/index.js";
+    import { WebGpuShader } from "$lib/index.js";
     import shaderCode from "./shader.wgsl?raw";
     import logo from "../logoDark.png";
 </script>
@@ -16,7 +16,7 @@
 
 <main>
     <div class="canvas-container">
-        <WebGpuFragmentShader
+        <WebGpuShader
             code={shaderCode}
             parameters={[
                 {
@@ -35,7 +35,7 @@
                     data: "scale",
                 },
             ]}
-        ></WebGpuFragmentShader>
+        ></WebGpuShader>
     </div>
 
     <div class="text">
