@@ -1,6 +1,6 @@
 <script context="module">
     /**
-     * The commonly used parameter data that the component can pass to the shader.
+     * The commonly used parameter values that the component can pass to the shader.
      *
      * - **resolution**: A `vec2` of the canvas width and height in physical device pixels.
      *
@@ -11,13 +11,13 @@
      *
      * - **time**: A `float` of the current time in seconds. NOTE: Passing this parameter to the shader will cause it to rerender every frame.
      *
-     * @typedef {"resolution" | "offset" | "scale" | "time"} BuiltinData
+     * @typedef {"resolution" | "offset" | "scale" | "time"} BuiltinValue
      */
 
     /**
      * @typedef {{
      *     name: string,
-     *     value: BuiltinData,
+     *     value: BuiltinValue,
      * }} BuiltinParameter
      *
      * @typedef {{
@@ -122,7 +122,7 @@
      * The list must not be updated after the component is initially mounted,
      * with the exception of the {@linkcode Parameter.value} property.
      * However, the {@linkcode Parameter.value} property cannot change its type,
-     * or transition between different types of builtin data.
+     * or transition between different types of builtin values.
      *
      * @type {readonly Parameter[]}
      */
@@ -319,7 +319,7 @@
     }
 
     /**
-     * Checks if the given parameter represents a builtin type of data, such as `"resolution"`.
+     * Checks if the given parameter has a value that is builtin.
      *
      * @param {Parameter} parameter
      * @returns {parameter is BuiltinParameter}
@@ -337,7 +337,7 @@
             default:
                 throw new Error(
                     // @ts-expect-error: Match should be exhaustive, but non-TS users should get a helpful runtime-error.
-                    `Unknown builtin data: ${parameter.value}`,
+                    `Unknown builtin value: ${parameter.value}`,
                 );
         }
     }
