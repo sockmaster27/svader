@@ -185,6 +185,11 @@
 
             /** @type {GPUBuffer[]} */
             const parameterBuffers = parameters.map(parameter => {
+                if (parameter.value === undefined)
+                    throw new Error(
+                        "One or more parameters had an undefined value field.",
+                    );
+
                 /** @type {number} */
                 let byteLength;
                 if (isBuiltinParameter(parameter))

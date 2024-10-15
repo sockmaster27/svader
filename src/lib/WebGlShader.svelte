@@ -349,6 +349,11 @@
         const { gl, shaderProgram } = await configPromise;
 
         for (const parameter of parameters) {
+            if (parameter.value === undefined)
+                throw new Error(
+                    "One or more parameters had an undefined value field.",
+                );
+
             if (!isBuiltinParameter(parameter)) {
                 const uniformPosition = gl.getUniformLocation(
                     shaderProgram,
