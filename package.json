@@ -1,6 +1,6 @@
 {
     "name": "svader",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Create GPU-rendered Svelte components",
     "author": "Holger Dal Mogensen",
     "license": "MIT",
