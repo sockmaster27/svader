@@ -1,59 +1,17 @@
 {
-    "name": "svader",
-    "version": "0.4.1",
-    "description": "Create GPU-rendered Svelte components",
-    "author": "Holger Dal Mogensen",
-    "license": "MIT",
-    "repository": "github:sockmaster27/svader",
-    "keywords": [
-        "svader",
-        "svelte",
-        "svelte-components",
-        "webgpu",
-        "webgl",
-        "gpu",
-        "accelerated",
-        "graphics",
-        "fragment",
-        "shader",
-        "shaders"
+    "name": "svader-monorepo",
+    "private": true,
+    "workspaces": [
+        "packages/*"
     ],
     "scripts": {
-        "dev": "vite dev",
-        "build": "vite build && npm run package",
-        "preview": "vite build && vite preview",
-        "package": "svelte-kit sync && svelte-package && publint",
-        "prepublishOnly": "npm run package",
-        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
-    },
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "svelte": "./dist/index.js"
-        }
-    },
-    "files": [
-        "dist",
-        "!dist/**/*.test.*",
-        "!dist/**/*.spec.*"
-    ],
-    "peerDependencies": {
-        "svelte": "^4.0.0"
-    },
-    "devDependencies": {
-        "@sveltejs/adapter-auto": "^3.2.4",
-        "@sveltejs/kit": "^2.5.22",
-        "@sveltejs/package": "^2.3.4",
-        "@sveltejs/vite-plugin-svelte": "^3.1.1",
-        "@webgpu/types": "^0.1.44",
-        "publint": "^0.2.9",
-        "svelte": "^4.2.18",
-        "svelte-check": "^3.8.5",
-        "typescript": "^5.5.4",
-        "vite": "^5.4.0"
-    },
-    "svelte": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "type": "module"
+        "package": "cd packages/svader && npm run package",
+        "dev:v4": "npm run package && cd packages/tests-svelte4 && npm run dev",
+        "preview:v4": "npm run package && cd packages/tests-svelte4 && npm run preview",
+        "check": "npm run package && npm run check:svader && npm run check:tests-svelte4",
+        "check:svader": "cd packages/svader && npm run check",
+        "check:tests-svelte4": "cd packages/tests-svelte4 && npm run check",
+        "build": "npm run package && npm run build:tests-svelte4",
+        "build:tests-svelte4": "cd packages/tests-svelte4 && npm run build"
+    }
 }

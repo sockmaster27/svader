@@ -15,7 +15,7 @@ jobs:
               with:
                   node-version: 20
             - name: Install Dependencies
-              run: npm install
+              run: npm ci
             - name: Check
               run: npm run check
             - name: Package

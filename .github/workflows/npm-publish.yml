@@ -16,8 +16,9 @@ jobs:
               with:
                   node-version: 20
                   registry-url: https://registry.npmjs.org/
+            - run: cd packages/svader
             - name: Install Dependencies
-              run: npm install
+              run: npm ci
             - name: Package
               run: npm run package
             - name: Publish
