@@ -9,7 +9,9 @@
      *
      * - **scale**: A `float` of the current scale factor, i.e. zoom level.
      *
-     * - **time**: A `float` of the current time in seconds. NOTE: Passing this parameter to the shader will cause it to rerender every frame.
+     * - **time**: A `float` of the current time in seconds.
+     *             NOTE: When the `"time"` parameter is passed to the shader, it will rerender every frame.
+     *             If the user agent has reduced motion enabled, the time parameter will always be equal to 0.0.
      *
      * @typedef {"resolution" | "offset" | "scale" | "time"} BuiltinValue
      */
@@ -78,18 +80,6 @@
 
     import BaseShader from "./BaseShader.svelte";
 
-    const maxTextureSize = 4096;
-
-    /** @type {() => void} */
-    let requestRender;
-    /** @type {() => void} */
-    let cancelRender;
-
-    /** @type {HTMLCanvasElement} */
-    let canvasElement;
-
-    const canRender = typeof WebGL2RenderingContext !== "undefined";
-
     /**
      * The width of the canvas element.
      *
@@ -127,10 +117,28 @@
      * @type {readonly Parameter[]}
      */
     export let parameters = [];
-
-    const hasTimeParameter = parameters.some(
+    const rerenderEveryFrame = parameters.some(
         parameter => parameter.value === "time",
     );
+
+    /**
+     * Whether a shader with a `"time"` parameter should ignore the user agent's reduced motion setting.
+     *
+     * Defaults to `false`.
+     */
+    export let forceAnimation = false;
+
+    const maxTextureSize = 4096;
+
+    /** @type {() => void} */
+    let requestRender;
+    /** @type {() => void} */
+    let cancelRender;
+
+    /** @type {HTMLCanvasElement} */
+    let canvasElement;
+
+    const canRender = typeof WebGL2RenderingContext !== "undefined";
 
     /** @typedef {{
      *     gl: WebGL2RenderingContext,
@@ -440,7 +448,8 @@
     {canRender}
     maxSize={maxTextureSize}
     offsetFromBottom
-    {hasTimeParameter}
+    {rerenderEveryFrame}
+    {forceAnimation}
     {render}
     {updateCanvasSize}
     {updateContainerSize}

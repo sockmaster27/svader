@@ -30,12 +30,17 @@
     export let render;
 
     /**
-     * Whether the shader takes time as a parameter.
-     * This will cause the shader to rerender every frame.
+     * Whether the shader should rerender every frame.
      *
      * @type {boolean}
      */
-    export let hasTimeParameter;
+    export let rerenderEveryFrame;
+    export let forceAnimation;
+    function prefersReducedMotion() {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+    if (!forceAnimation && prefersReducedMotion()) rerenderEveryFrame = false;
 
     /**
      * Timestamp of when the component was mounted. In seconds.
@@ -121,14 +126,14 @@
             renderCallbacks.forEach(callback => callback());
             renderCallbacks.length = 0;
 
-            if (hasTimeParameter)
+            if (rerenderEveryFrame)
                 updateTime(performance.now() / 1000 - mountTime);
 
             render();
 
             requestHandle = null;
 
-            if (hasTimeParameter) requestRender();
+            if (rerenderEveryFrame) requestRender();
         });
     }
     /**
