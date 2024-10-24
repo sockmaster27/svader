@@ -429,7 +429,7 @@
     }
     $: updateParameters(parameters);
 
-    onDestroy(async () => {
+    onDestroy(() => {
         cancelRender();
     });
 </script>
@@ -450,7 +450,6 @@
     bind:canvasElement
     bind:requestRender
     bind:cancelRender
-    {...$$restProps}
 >
     <slot></slot>
 </BaseShader>

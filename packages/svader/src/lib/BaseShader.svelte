@@ -207,7 +207,6 @@
         on:intersectionchanged={updateCanvasCutout}
         style:--width={width}
         style:--height={height}
-        {...$$restProps}
     >
         <canvas
             bind:this={canvasElement}
@@ -223,7 +222,7 @@
         </canvas>
     </div>
 {:else}
-    <slot {...$$restProps}></slot>
+    <slot></slot>
 {/if}
 
 <style>
