@@ -2,15 +2,11 @@
     import { WebGpuShader } from "svader";
     import shaderCode from "./shader.wgsl?raw";
 
-    // Mount and dismount the component every tick
-    const tickInterval = 500;
-    let ticks = 0;
-    setInterval(() => {
-        ticks += 1;
-    }, tickInterval);
-    $: show = ticks % 2 === 0;
+    let show = true;
 </script>
 
+<label for="show">Show</label>
+<input id="show" type="checkbox" bind:checked={show} />
 {#if show}
     <WebGpuShader
         width="500px"
