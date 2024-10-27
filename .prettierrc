@@ -8,5 +8,11 @@
     "trailingComma": "all",
     "bracketSpacing": true,
     "arrowParens": "avoid",
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "overrides": [
+        {
+            "files": "*.yml",
+            "options": { "tabWidth": 2 }
+        }
+    ]
 }

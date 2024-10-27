@@ -8,7 +8,8 @@
         "package": "cd packages/svader && npm run package",
         "dev:v4": "npm run package && cd packages/tests-svelte4 && npm run dev",
         "preview:v4": "npm run package && cd packages/tests-svelte4 && npm run preview",
-        "check": "npm run package && npm run check:svader && npm run check:tests-svelte4",
+        "check": "npm run package && npm run check:formatting && npm run check:svader && npm run check:tests-svelte4",
+        "check:formatting": "prettier . --check",
         "check:svader": "cd packages/svader && npm run check",
         "check:tests-svelte4": "cd packages/tests-svelte4 && npm run check",
         "build": "npm run package && npm run build:tests-svelte4",
@@ -18,6 +19,7 @@
     "devDependencies": {
         "@playwright/test": "^1.48.1",
         "@types/node": "^22.7.9",
+        "prettier": "^3.3.3",
         "prettier-plugin-svelte": "^3.2.7"
     }
 }

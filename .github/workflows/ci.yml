@@ -1,24 +1,24 @@
 name: CI
 
 on:
-    push:
-        branches: [master]
-    pull_request:
-        branches: [master]
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
-    check:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-            - name: Install Dependencies
-              run: npm ci
-            - name: Check
-              run: npm run check
-            - name: Package
-              run: npm run package
-            - name: Build Example Site
-              run: npm run build
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: npm ci
+      - name: Check
+        run: npm run check
+      - name: Package
+        run: npm run package
+      - name: Build Example Site
+        run: npm run build
