@@ -12,6 +12,11 @@
         "check:svader": "cd packages/svader && npm run check",
         "check:tests-svelte4": "cd packages/tests-svelte4 && npm run check",
         "build": "npm run package && npm run build:tests-svelte4",
-        "build:tests-svelte4": "cd packages/tests-svelte4 && npm run build"
+        "build:tests-svelte4": "cd packages/tests-svelte4 && npm run build",
+        "test": "playwright test"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.48.1",
+        "@types/node": "^22.7.9"
     }
 }
