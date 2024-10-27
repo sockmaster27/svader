@@ -17,6 +17,7 @@
     },
     "devDependencies": {
         "@playwright/test": "^1.48.1",
-        "@types/node": "^22.7.9"
+        "@types/node": "^22.7.9",
+        "prettier-plugin-svelte": "^3.2.7"
     }
 }

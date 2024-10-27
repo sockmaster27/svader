@@ -2,27 +2,31 @@ import { test, expect, TestInfo, Page } from "@playwright/test";
 
 // No output on the console is desired
 test.beforeEach(async ({ page }) => {
-    page.on("console", (msg) => {
+    page.on("console", msg => {
         throw new Error(`Output printed to console:\n${msg.text()}`);
     });
 });
 
 /** Project names (as defined in playwright.config.ts) that are not expected to support WebGPU. */
-const webGpuUnsupported = [
-    "Firefox",
-]
+const webGpuUnsupported = ["Firefox"];
 
 /**
  * Takes a screenshot of the current page and compares it to a reference, as indexed by the given arguments.
- * If a reference screenshot does not exist, it will be created and used for future assertions. 
- * 
+ * If a reference screenshot does not exist, it will be created and used for future assertions.
+ *
  * @param page
  * @param info
  * @param name A name that identifies this test.
  * @param api The API used in the test, either `"webgl"` or `"webgpu"`.
  * @param number A number identifying the specific screeenshot within the test, if multiple are included.
  */
-async function assertScreenshot(page: Page, info: TestInfo, name: string, api: "webgl" | "webgpu", number?: number) {
+async function assertScreenshot(
+    page: Page,
+    info: TestInfo,
+    name: string,
+    api: "webgl" | "webgpu",
+    number?: number,
+) {
     const projectName = info.project.name;
     const isMobile = info.project.use.isMobile ?? false;
 
@@ -31,7 +35,8 @@ async function assertScreenshot(page: Page, info: TestInfo, name: string, api: "
 
     const isWebGpu = api === "webgpu";
     const isWebGpuUnsupported = webGpuUnsupported.includes(projectName);
-    const unsupportedString = (isWebGpu && isWebGpuUnsupported) ? "-unsupported" : "";
+    const unsupportedString =
+        isWebGpu && isWebGpuUnsupported ? "-unsupported" : "";
 
     const fileName = `${name}-${api}${unsupportedString}${mobileString}${numberString}.png`;
 
@@ -44,7 +49,6 @@ async function assertScreenshot(page: Page, info: TestInfo, name: string, api: "
 
 const apis = ["webgl", "webgpu"] as const;
 apis.forEach(api => {
-
     test(`Hello world [${api}]`, async ({ page }, info) => {
         const pageName = "hello-world";
 
@@ -56,7 +60,7 @@ apis.forEach(api => {
         const pageName = "remount";
 
         await page.goto(`/${pageName}/${api}`);
-        let show = page.getByLabel("Show")
+        let show = page.getByLabel("Show");
         await show.uncheck();
         await assertScreenshot(page, info, pageName, api, 1);
         for (let i = 0; i < 10; i++) {
@@ -73,7 +77,12 @@ apis.forEach(api => {
         await page.goto(`/${pageName}/${api}`);
         await assertScreenshot(page, info, pageName, api, 1);
         // Scroll to bottom-right corner
-        await page.evaluate(() => window.scrollBy(document.body.scrollWidth, document.body.scrollHeight));
+        await page.evaluate(() =>
+            window.scrollBy(
+                document.body.scrollWidth,
+                document.body.scrollHeight,
+            ),
+        );
         await assertScreenshot(page, info, pageName, api, 2);
     });
 
@@ -109,5 +118,4 @@ apis.forEach(api => {
         slider.fill("0");
         await assertScreenshot(page, info, pageName, api, 3);
     });
-
 });
