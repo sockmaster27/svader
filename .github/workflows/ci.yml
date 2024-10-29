@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - windows-latests
+          - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
