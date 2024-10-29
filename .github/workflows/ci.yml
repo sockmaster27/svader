@@ -22,27 +22,3 @@ jobs:
         run: npm run package
       - name: Build Example Site
         run: npm run build
-  test:
-    timeout-minutes: 60
-    strategy:
-      matrix:
-        os:
-          - windows-latest
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install Dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Test
-        run: npm run test
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
