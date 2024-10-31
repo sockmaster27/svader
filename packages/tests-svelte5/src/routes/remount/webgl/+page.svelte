@@ -3,13 +3,6 @@
     import shaderCode from "./shader.frag?raw";
 
     let show = true;
-    // async function f() {
-    //     while (true) {
-    //         show = !show;
-    //         await new Promise(resolve => requestIdleCallback(resolve));
-    //     }
-    // }
-    // if (typeof window !== "undefined") f();
 </script>
 
 <label for="show">Show</label>

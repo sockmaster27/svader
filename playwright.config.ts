@@ -80,9 +80,16 @@ export default defineConfig({
         // },
     ],
 
-    webServer: {
-        command: "npm run preview:v4",
-        port: 4173,
-        reuseExistingServer: !process.env.CI,
-    },
+    webServer: [
+        {
+            command: "npm run preview:v4",
+            port: 4173,
+            reuseExistingServer: !process.env.CI,
+        },
+        {
+            command: "npm run preview:v5",
+            port: 4174,
+            reuseExistingServer: !process.env.CI,
+        },
+    ],
 });

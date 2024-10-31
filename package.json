@@ -7,14 +7,18 @@
     "scripts": {
         "package": "cd packages/svader && npm run package",
         "dev:v4": "npm run package && cd packages/tests-svelte4 && npm run dev",
-        "preview:v4": "npm run package && cd packages/tests-svelte4 && npm run preview",
-        "check": "npm run package && npm run check:formatting && npm run check:svader && npm run check:tests-svelte4",
+        "dev:v5": "npm run package && cd packages/tests-svelte5 && npm run dev",
+        "preview:v4": "cd packages/tests-svelte4 && npm run preview",
+        "preview:v5": "cd packages/tests-svelte5 && npm run preview",
+        "check": "npm run package && npm run check:formatting && npm run check:svader && npm run check:v4 && npm run check:v5",
         "check:formatting": "prettier . --check",
         "check:svader": "cd packages/svader && npm run check",
-        "check:tests-svelte4": "cd packages/tests-svelte4 && npm run check",
-        "build": "npm run package && npm run build:tests-svelte4",
-        "build:tests-svelte4": "cd packages/tests-svelte4 && npm run build",
-        "test": "playwright test"
+        "check:v4": "cd packages/tests-svelte4 && npm run check",
+        "check:v5": "cd packages/tests-svelte5 && npm run check",
+        "build": "npm run package && npm run build:v4 && npm run build:v5",
+        "build:v4": "cd packages/tests-svelte4 && npm run build",
+        "build:v5": "cd packages/tests-svelte5 && npm run build",
+        "test": "npm run package && playwright test"
     },
     "devDependencies": {
         "@playwright/test": "^1.48.1",
