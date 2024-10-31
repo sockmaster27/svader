@@ -132,8 +132,6 @@
 
     /** @type {() => void} */
     let requestRender;
-    /** @type {() => void} */
-    let cancelRender;
 
     /** @type {HTMLCanvasElement} */
     let canvasElement;
@@ -437,10 +435,6 @@
         requestRender();
     }
     $: updateParameters(parameters);
-
-    onDestroy(() => {
-        cancelRender();
-    });
 </script>
 
 <BaseShader
@@ -459,7 +453,6 @@
     {updateTime}
     bind:canvasElement
     bind:requestRender
-    bind:cancelRender
 >
     <slot></slot>
 </BaseShader>

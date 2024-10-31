@@ -1,7 +1,7 @@
 <script>
     import { pixelScale, clamp } from "./utils.js";
     import { intersectionObserver } from "./intersectionObserver.js";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
 
     /**
      * The width of the canvas element.
@@ -139,7 +139,7 @@
     /**
      * Cancel any requested render pass.
      */
-    export function cancelRender() {
+    function cancelRender() {
         if (requestHandle !== null) {
             cancelAnimationFrame(requestHandle);
             requestHandle = null;
@@ -202,6 +202,8 @@
                 containerSizeY - canvasSizeY,
             ) * $pixelScale;
     }
+
+    onDestroy(cancelRender);
 </script>
 
 {#if canRender}

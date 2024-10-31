@@ -154,8 +154,6 @@
 
     /** @type {() => void} */
     let requestRender;
-    /** @type {() => void} */
-    let cancelRender;
 
     /** @type {HTMLCanvasElement} */
     let canvasElement;
@@ -490,7 +488,6 @@
 
     onDestroy(async () => {
         const { context, parameterBuffers } = await configPromise;
-        cancelRender();
         context.unconfigure();
         parameterBuffers.forEach(b => b.destroy());
     });
@@ -510,7 +507,6 @@
     {updateTime}
     bind:canvasElement
     bind:requestRender
-    bind:cancelRender
 >
     <slot></slot>
 </BaseShader>
