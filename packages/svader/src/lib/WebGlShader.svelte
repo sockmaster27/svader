@@ -155,6 +155,7 @@
         onMount(async () => {
             if (!canRender) return;
 
+            if (canvasElement === null) return;
             const gl = canvasElement.getContext("webgl2");
             if (gl === null) throw new Error("Failed to get WebGL2 context.");
             const shaderProgram = gl.createProgram();

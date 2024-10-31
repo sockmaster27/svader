@@ -182,6 +182,7 @@
             if (globalConfig === null) return;
             const { device, vertexBuffer, vertexBufferLayout } = globalConfig;
 
+            if (canvasElement === null) return;
             const context = canvasElement.getContext("webgpu");
             if (!context) throw new Error("Failed to get WebGPU context.");
             const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
