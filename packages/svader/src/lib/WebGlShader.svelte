@@ -76,9 +76,18 @@
 </script>
 
 <script>
-    import { onDestroy, onMount } from "svelte";
+    import { onMount } from "svelte";
 
     import BaseShader from "./BaseShader.svelte";
+
+    /**
+     * This prop is only here to satisfy compatibility with Svelte 5 projects.
+     * HAS NO EFFECT.
+     *
+     * @type {any}
+     */
+    export let children = null;
+    children;
 
     /**
      * The width of the canvas element.

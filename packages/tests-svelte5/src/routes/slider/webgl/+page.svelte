@@ -1,8 +1,10 @@
+<svelte:options runes />
+
 <script>
     import { WebGlShader } from "svader";
     import shaderCode from "./shader.frag?raw";
 
-    let val = 0.75;
+    let val = $state(0.75);
 </script>
 
 <main>

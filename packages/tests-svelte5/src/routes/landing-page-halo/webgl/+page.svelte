@@ -1,3 +1,5 @@
+<svelte:options runes />
+
 <script>
     import { WebGlShader } from "svader";
     import shaderCode from "./shader.frag?raw";

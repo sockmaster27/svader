@@ -1,8 +1,10 @@
+<svelte:options runes />
+
 <script>
     import { WebGpuShader } from "svader";
     import shaderCode from "./shader.wgsl?raw";
 
-    let show = true;
+    let show = $state(true);
 </script>
 
 <label for="show">Show</label>
