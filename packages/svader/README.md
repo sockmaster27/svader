@@ -9,6 +9,8 @@
 
 Create GPU-rendered Svelte components with WebGL and WebGPU fragment shaders.
 
+Supports Svelte 4 and Svelte 5.
+
 ## What is a fragment shader?
 
 In short, a _fragment shader_ can be written as a program that takes the coordinates of a pixel on the screen and returns the color that this pixel should have.
