@@ -251,11 +251,11 @@
 
         position: absolute;
         left: var(--offset-x);
-    }
-    canvas:not(.offset-from-bottom) {
+
         top: var(--offset-y);
     }
     canvas.offset-from-bottom {
+        top: unset;
         bottom: var(--offset-y);
     }
 </style>
