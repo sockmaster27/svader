@@ -16,12 +16,12 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: cd packages/svader
       - name: Install Dependencies
         run: npm ci
       - name: Package
         run: npm run package
       - name: Publish
+        working-directory: ./packages/svader
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
