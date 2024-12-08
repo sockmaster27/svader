@@ -46,12 +46,12 @@ If you're unsure about what to use, see the [WebGL vs. WebGPU](#webgl-vs-webgpu)
 
 ### Sections
 
--   [WebGL](#webgl)
-    -   [WebGL parameters](#webgl-parameters)
-        -   [WebGL built-in values](#webgl-built-in-values)
--   [WebGPU](#webgpu)
-    -   [WebGPU parameters](#webgpu-parameters)
-        -   [WebGPU built-in values](#webgpu-built-in-values)
+- [WebGL](#webgl)
+    - [WebGL parameters](#webgl-parameters)
+        - [WebGL built-in values](#webgl-built-in-values)
+- [WebGPU](#webgpu)
+    - [WebGPU parameters](#webgpu-parameters)
+        - [WebGPU built-in values](#webgpu-built-in-values)
 
 ### WebGL
 
@@ -125,38 +125,38 @@ Lastly, the `<WebGlShader>` component accepts a fallback slot, which is rendered
 
 The `parameters` property is an array of objects with the following properties:
 
--   **`name`**: The name of the uniform parameter, e.g. `"my_uniform"`.
-    This must match the name of the parameter in the shader code.
+- **`name`**: The name of the uniform parameter, e.g. `"my_uniform"`.
+  This must match the name of the parameter in the shader code.
 
--   **`type`**: The type of the uniform parameter as it is written in the shader code, e.g. `"float"`.
-    If the `value` property is a [built-in value](#webgl-built-in-values), such as `"resolution"`,
-    the `type` will be determined automatically and should not be set.
+- **`type`**: The type of the uniform parameter as it is written in the shader code, e.g. `"float"`.
+  If the `value` property is a [built-in value](#webgl-built-in-values), such as `"resolution"`,
+  the `type` will be determined automatically and should not be set.
 
--   **`value`**: The value of the uniform parameter, or a string specifying a [built-in value](#webgl-built-in-values).
-    If not a built-in value, the type of this property must correspond to the `type` property, such that:
-    -   **`float`, `int`, `uint`** is a `number`,
-    -   **`vecN`, `ivecN`, `uvecN`** is a `number[]` with a length of `N`, e.g. `vec2` -> `[1.2, 3.4]`.
-    -   **`matN`** is a `number[]` with a length of `N * N`, e.g. `mat2` -> `[1, 2, 3, 4]`.
+- **`value`**: The value of the uniform parameter, or a string specifying a [built-in value](#webgl-built-in-values).
+  If not a built-in value, the type of this property must correspond to the `type` property, such that:
+    - **`float`, `int`, `uint`** is a `number`,
+    - **`vecN`, `ivecN`, `uvecN`** is a `number[]` with a length of `N`, e.g. `vec2` -> `[1.2, 3.4]`.
+    - **`matN`** is a `number[]` with a length of `N * N`, e.g. `mat2` -> `[1, 2, 3, 4]`.
 
 ##### WebGL built-in values
 
 Some types of uniforms are used very often. These are implemented in Svader itself, and referred to as _built-in values_.
 To use these, the `value` property of the parameter object must be set to a string matching one of the following:
 
--   **`"resolution"`**: A `vec2` of the canvas width and height in physical device pixels.
+- **`"resolution"`**: A `vec2` of the canvas width and height in physical device pixels.
 
--   **`"scale"`**: A `float` of the ratio between CSS pixels and physical device pixels, i.e. zoom level.
-    For example, if the browser has been zoomed to 150%, the `scale` parameter will be `1.5`.
+- **`"scale"`**: A `float` of the ratio between CSS pixels and physical device pixels, i.e. zoom level.
+  For example, if the browser has been zoomed to 150%, the `scale` parameter will be `1.5`.
 
--   **`"time"`**: A `float` of the current time in seconds.
-    NOTE: Passing this parameter to the shader will cause it to rerender every frame.
+- **`"time"`**: A `float` of the current time in seconds.
+  NOTE: Passing this parameter to the shader will cause it to rerender every frame.
 
--   **`"offset"`**: A `vec2` to be added to the `gl_FragCoord.xy` of the fragment shader.
-    Sometimes the size of the canvas is limited by hardware.
-    To compensate for this, Svader creates a virtual canvas with a smaller cutout shifting around to cover the screen.
-    The `"resolution"` parameter is automatically adjusted to match the size of this virtual canvas, but for technical reasons,
-    the `gl_FragCoord.xy` cannot be adjusted from the outside.
-    Therefore, the `"offset"` parameter is provided to be manually added to these coordinates.
+- **`"offset"`**: A `vec2` to be added to the `gl_FragCoord.xy` of the fragment shader.
+  Sometimes the size of the canvas is limited by hardware.
+  To compensate for this, Svader creates a virtual canvas with a smaller cutout shifting around to cover the screen.
+  The `"resolution"` parameter is automatically adjusted to match the size of this virtual canvas, but for technical reasons,
+  the `gl_FragCoord.xy` cannot be adjusted from the outside.
+  Therefore, the `"offset"` parameter is provided to be manually added to these coordinates.
 
 ### WebGPU
 
@@ -228,11 +228,11 @@ Lastly, the `<WebGpuShader>` component accepts a fallback slot, which is rendere
 
 The `parameters` property is an array of objects with the following properties:
 
--   **`label`**: The name of the parameter to be used for debugging.
-    This does not have to correspond to the name of the parameter in the shader code.
+- **`label`**: The name of the parameter to be used for debugging.
+  This does not have to correspond to the name of the parameter in the shader code.
 
--   **`binding`**: An integer used to match the parameter to the variable in the shader code.
-    This has to match the `binding` property of the parameter in the shader code, e.g. for the variable declaration
+- **`binding`**: An integer used to match the parameter to the variable in the shader code.
+  This has to match the `binding` property of the parameter in the shader code, e.g. for the variable declaration
 
     ```WGSL
     @group(0) @binding(42) var<uniform> my_variable: f32;
@@ -240,12 +240,12 @@ The `parameters` property is an array of objects with the following properties:
 
     the `binding` property should be `42`.
 
--   **`value`**: The value of the parameter, or a string specifying a [built-in value](#webgpu-built-in-values).
-    If not a built-in value, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
-    For example, to pass in a number to an `f32` parameter, it can be constructed like `new Float32Array([myNumberValue])`.
+- **`value`**: The value of the parameter, or a string specifying a [built-in value](#webgpu-built-in-values).
+  If not a built-in value, this parameter should be an `ArrayBuffer`/`ArrayBufferView`.
+  For example, to pass in a number to an `f32` parameter, it can be constructed like `new Float32Array([myNumberValue])`.
 
--   **`storage`**: [Optional - defaults to `false`] Whether the parameter is a storage variable rather than a uniform variable.
-    This has to match the declaration in the shader code, e.g. for the variable declaration
+- **`storage`**: [Optional - defaults to `false`] Whether the parameter is a storage variable rather than a uniform variable.
+  This has to match the declaration in the shader code, e.g. for the variable declaration
 
     ```WGSL
     @group(0) @binding(0) var<uniform> my_variable: f32;
@@ -265,20 +265,20 @@ The `parameters` property is an array of objects with the following properties:
 Some types of inputs are used very often. These are implemented in Svader itself, and referred to as _built-in values_.
 To use these, the `value` property of the parameter object must be set to a string matching one of the following:
 
--   **`"resolution"`**: A `vec2f` of the canvas width and height in physical device pixels.
+- **`"resolution"`**: A `vec2f` of the canvas width and height in physical device pixels.
 
--   **`"scale"`**: An `f32` of the ratio between CSS pixels and physical device pixels, i.e. zoom level.
-    For example, if the browser has been zoomed to 150%, the `scale` parameter will be `1.5`.
+- **`"scale"`**: An `f32` of the ratio between CSS pixels and physical device pixels, i.e. zoom level.
+  For example, if the browser has been zoomed to 150%, the `scale` parameter will be `1.5`.
 
--   **`"time"`**: An `f32` of the current time in seconds.
-    NOTE: Passing this parameter to the shader will cause it to rerender every frame.
+- **`"time"`**: An `f32` of the current time in seconds.
+  NOTE: Passing this parameter to the shader will cause it to rerender every frame.
 
--   **`"offset"`**: A `vec2f` to be added to the `@builtin(position)` of the fragment shader.
-    Sometimes the size of the canvas is limited by hardware.
-    To compensate for this, Svader creates a virtual canvas with a smaller cutout shifting around to cover the screen.
-    The `"resolution"` parameter is automatically adjusted to match the size of this virtual canvas, but for technical reasons,
-    the `@builtin(position)` cannot be adjusted from the outside.
-    Therefore, the `"offset"` parameter is provided to be manually added to these coordinates.
+- **`"offset"`**: A `vec2f` to be added to the `@builtin(position)` of the fragment shader.
+  Sometimes the size of the canvas is limited by hardware.
+  To compensate for this, Svader creates a virtual canvas with a smaller cutout shifting around to cover the screen.
+  The `"resolution"` parameter is automatically adjusted to match the size of this virtual canvas, but for technical reasons,
+  the `@builtin(position)` cannot be adjusted from the outside.
+  Therefore, the `"offset"` parameter is provided to be manually added to these coordinates.
 
 ## WebGL vs. WebGPU
 
