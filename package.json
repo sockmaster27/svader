@@ -1,6 +1,7 @@
 {
     "name": "svader-monorepo",
     "private": true,
+    "type": "module",
     "workspaces": [
         "packages/*"
     ],
@@ -10,28 +11,35 @@
         "dev:v5": "npm run package && cd packages/tests-svelte5 && npm run dev",
         "preview:v4": "cd packages/tests-svelte4 && npm run preview",
         "preview:v5": "cd packages/tests-svelte5 && npm run preview",
-        "check": "npm run package && npm run check:formatting && npm run check:svader && npm run check:v4 && npm run check:v5",
+        "check": "npm run package && npm run check:formatting && npm run check:lint && npm run check:svader && npm run check:v4 && npm run check:v5",
         "check:formatting": "prettier . --check",
+        "check:lint": "eslint .",
         "check:svader": "cd packages/svader && npm run check",
         "check:v4": "cd packages/tests-svelte4 && npm run check",
         "check:v5": "cd packages/tests-svelte5 && npm run check",
         "build": "npm run package && npm run build:v4 && npm run build:v5",
         "build:v4": "cd packages/tests-svelte4 && npm run build",
         "build:v5": "cd packages/tests-svelte5 && npm run build",
-        "test": "npm run package && playwright test"
+        "test": "npm run package && playwright test",
+        "lint": "eslint ."
     },
     "devDependencies": {
+        "@eslint/compat": "^1.2.3",
         "@playwright/test": "^1.49.0",
         "@sveltejs/adapter-auto": "^3.3.1",
         "@sveltejs/kit": "^2.9.0",
         "@sveltejs/package": "^2.3.7",
         "@sveltejs/vite-plugin-svelte": "^5.0.1",
         "@types/node": "^22.10.1",
+        "eslint": "^9.7.0",
+        "eslint-plugin-svelte": "^2.36.0",
+        "globals": "^15.0.0",
         "prettier": "^3.4.2",
         "prettier-plugin-svelte": "^3.3.2",
         "publint": "^0.2.12",
         "svelte-check": "^4.1.1",
         "typescript": "^5.7.2",
+        "typescript-eslint": "^8.0.0",
         "vite": "^6.0.3"
     }
 }
