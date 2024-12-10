@@ -27,7 +27,7 @@ fn cubic_s(x: f32) -> f32 {
 }
 
 
-// Create Perline noise: https://en.wikipedia.org/wiki/Perlin_noise
+// Create Perlin noise: https://en.wikipedia.org/wiki/Perlin_noise
 fn perlin_noise(pos: vec2f) -> f32 {
     let cell_size = 100.0 * scale;
 

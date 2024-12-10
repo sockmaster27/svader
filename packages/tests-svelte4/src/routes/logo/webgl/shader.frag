@@ -32,7 +32,7 @@ float cubic_s(float x) {
 }
 
 
-// Create Perline noise: https://en.wikipedia.org/wiki/Perlin_noise
+// Create Perlin noise: https://en.wikipedia.org/wiki/Perlin_noise
 float perlin_noise(vec2 pos) {
     float cell_size = 100.0 * u_scale;
 
