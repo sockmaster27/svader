@@ -36,7 +36,7 @@ async function assertScreenshot(
     const isMobile = info.project.use.isMobile ?? false;
 
     const mobileString = isMobile ? "-mobile" : "";
-    const numberString = number ? `-${number}` : "";
+    const numberString = number !== undefined ? `-${number}` : "";
 
     const isWebGpu = api === "webgpu";
     const isWebGpuUnsupported = webGpuUnsupported.includes(projectName);
@@ -76,7 +76,7 @@ builds.forEach(({ name, port }) => {
                     const pageName = "remount";
 
                     await page.goto(`/${pageName}/${api}`);
-                    let show = page.getByLabel("Show");
+                    const show = page.getByLabel("Show");
                     await show.uncheck();
                     await assertScreenshot(page, info, pageName, api, 1);
                     for (let i = 0; i < 10; i++) {
