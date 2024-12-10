@@ -53,8 +53,8 @@ Svader's test suite consists of a set of visual tests that are run against each 
 
 ## Style Guide
 
-To ensure consistent code style, the [Prettier](https://prettier.io/) code formatter is used to automatically format the code.
-When you open a pull request, an automated check will be run to ensure that the code is formatted correctly with respect to the `.prettierrc` configuration file.
+To ensure consistent code style, the [Prettier](https://prettier.io/) formatter and [ESLint](https://eslint.org/) linter is used.
+When you open a pull request, an automated check will be run to ensure that the code follows the correct style in accordance with the project configuration.
 
 The same check can be run locally using the following command:
 
@@ -63,6 +63,7 @@ npm run check
 ```
 
 When using VS Code, the workspace is set up to automatically run this formatting on every save, as long as you have the recommended [Prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) installed.
+The linting errors will also be displayed inline if the [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) is installed.
 
 ## Licensing
 
