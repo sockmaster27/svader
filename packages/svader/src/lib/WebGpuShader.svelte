@@ -34,7 +34,7 @@
      * @typedef {BuiltinParameter | NonBuiltinParameter} Parameter
      */
 
-    const canRender =
+    let canRender =
         typeof navigator !== "undefined" &&
         typeof navigator.gpu !== "undefined";
 
@@ -56,7 +56,10 @@
     async function globalInit() {
         if (!canRender) return null;
         const adapter = await navigator.gpu.requestAdapter();
-        if (!adapter) throw new Error("No WebGPU adapter found.");
+        if (!adapter) {
+            canRender = false;
+            return null;
+        }
 
         const device = await adapter.requestDevice();
 
