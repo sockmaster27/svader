@@ -102,13 +102,6 @@ builds.forEach(({ name, port }) => {
                     await assertScreenshot(page, info, pageName, api, 2);
                 });
 
-                test(`Logo`, async ({ page }, info) => {
-                    const pageName = "logo";
-
-                    await page.goto(`/${pageName}/${api}`);
-                    await assertScreenshot(page, info, pageName, api);
-                });
-
                 test(`Landing page with bubbles`, async ({ page }, info) => {
                     const pageName = "landing-page-bubbles";
 

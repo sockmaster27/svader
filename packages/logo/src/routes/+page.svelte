@@ -3,7 +3,7 @@
 <script>
     import { WebGlShader } from "svader";
     import shaderCode from "./shader.frag?raw";
-    import logo from "../logoDark.png";
+    import logo from "./logoDark.png";
 </script>
 
 <!-- Import 'Kanit' font from Google Fonts -->
