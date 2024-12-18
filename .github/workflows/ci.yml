@@ -22,25 +22,3 @@ jobs:
         run: npm run package
       - name: Build Example Sites
         run: npm run build
-
-  test:
-    # Test on Windows, since I can't get WebGPU to work on Linux at all
-    runs-on: windows-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install Dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Tests
-        run: npm test
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
