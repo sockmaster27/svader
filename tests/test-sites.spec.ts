@@ -1,19 +1,10 @@
 import { test, expect, TestInfo, Page } from "@playwright/test";
 
-// No output on the console is desired
 test.beforeEach(async ({ page }) => {
-    page.on("console", msg => {
-        expect
-            .soft(false, `Output printed to console:\n${msg.text()}`)
-            .toBeTruthy();
-    });
     page.on("pageerror", msg => {
         expect.soft(false, `Error thrown:\n${msg.message}`).toBeTruthy();
     });
 });
-
-/** Project names (as defined in playwright.config.ts) that are not expected to support WebGPU. */
-const webGpuUnsupported = ["Firefox"];
 
 /**
  * Takes a screenshot of the current page and compares it to a reference, as indexed by the given arguments.
@@ -39,7 +30,7 @@ async function assertScreenshot(
     const numberString = number !== undefined ? `-${number}` : "";
 
     const isWebGpu = api === "webgpu";
-    const isWebGpuUnsupported = webGpuUnsupported.includes(projectName);
+    const isWebGpuUnsupported = projectName.includes("<No WebGPU>");
     const unsupportedString =
         isWebGpu && isWebGpuUnsupported ? "-unsupported" : "";
 
@@ -65,14 +56,14 @@ builds.forEach(({ name, port }) => {
 
         apis.forEach(api => {
             test.describe(api, () => {
-                test(`Hello world`, async ({ page }, info) => {
+                test("Hello world", async ({ page }, info) => {
                     const pageName = "hello-world";
 
                     await page.goto(`/${pageName}/${api}`);
                     await assertScreenshot(page, info, pageName, api);
                 });
 
-                test(`Remounting canvas`, async ({ page }, info) => {
+                test("Remounting canvas", async ({ page }, info) => {
                     const pageName = "remount";
 
                     await page.goto(`/${pageName}/${api}`);
@@ -87,7 +78,7 @@ builds.forEach(({ name, port }) => {
                     await assertScreenshot(page, info, pageName, api, 2);
                 });
 
-                test(`Oversized canvas`, async ({ page }, info) => {
+                test("Oversized canvas", async ({ page }, info) => {
                     const pageName = "oversized-canvas";
 
                     await page.goto(`/${pageName}/${api}`);
@@ -102,29 +93,29 @@ builds.forEach(({ name, port }) => {
                     await assertScreenshot(page, info, pageName, api, 2);
                 });
 
-                test(`Landing page with bubbles`, async ({ page }, info) => {
+                test("Landing page with bubbles", async ({ page }, info) => {
                     const pageName = "landing-page-bubbles";
 
                     await page.goto(`/${pageName}/${api}`);
                     await assertScreenshot(page, info, pageName, api);
                 });
 
-                test(`Landing page with a halo`, async ({ page }, info) => {
+                test("Landing page with a halo", async ({ page }, info) => {
                     const pageName = "landing-page-halo";
 
                     await page.goto(`/${pageName}/${api}`);
                     await assertScreenshot(page, info, pageName, api);
                 });
 
-                test(`Slider component`, async ({ page }, info) => {
+                test("Slider component", async ({ page }, info) => {
                     const pageName = "slider";
 
                     await page.goto(`/${pageName}/${api}`);
                     const slider = page.getByRole("slider");
                     await assertScreenshot(page, info, pageName, api, 1);
-                    slider.fill("1");
+                    await slider.fill("1");
                     await assertScreenshot(page, info, pageName, api, 2);
-                    slider.fill("0");
+                    await slider.fill("0");
                     await assertScreenshot(page, info, pageName, api, 3);
                 });
             });

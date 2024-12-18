@@ -1,12 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Apparently, Chromium browsers need to be explicitly told to use GPU acceleration in headless mode,
-// and software rendering creates slightly different results for WebGL in noise and such,
-// while WebGPU has no software fallback at all.
-const chromiumHardware = {
-    args: ["--enable-gpu"],
-};
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -37,35 +30,41 @@ export default defineConfig({
 
     projects: [
         {
-            name: "Firefox",
+            name: "Firefox <No WebGPU>",
             use: {
                 ...devices["Desktop Firefox"],
             },
         },
+        /* TODO: Test this once Firefox supports WebGPU in stable */
+        // {
+        //     name: "Firefox",
+        //     use: {
+        //         ...devices["Desktop Firefox"],
+        //         launchOptions: {
+        //             firefoxUserPrefs: {
+        //                 "dom.webgpu.enabled": true,
+        //             },
+        //         },
+        //     },
+        // },
         {
-            name: "Microsoft Edge",
+            name: "Chromium <No WebGPU>",
             use: {
-                ...devices["Desktop Edge"],
-                channel: "msedge",
-                launchOptions: chromiumHardware,
+                ...devices["Desktop Chrome"],
+                channel: "chromium",
             },
         },
         {
-            name: "Google Chrome",
+            name: "Chromium",
             use: {
                 ...devices["Desktop Chrome"],
-                channel: "chrome",
-                launchOptions: chromiumHardware,
+                channel: "chromium",
+                launchOptions: {
+                    args: ["--enable-unsafe-webgpu"],
+                },
             },
         },
         /* TODO: Test these as well */
-        // {
-        //     name: 'Chromium',
-        //     use: {
-        //       ...devices['Desktop Chrome'],
-        //       launchOptions: chromiumHardware,
-        //     },
-        //   },
         // {
         //   name: 'WebKit',
         //   use: { ...devices['Desktop Safari'] },
