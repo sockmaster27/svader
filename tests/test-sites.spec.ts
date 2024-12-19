@@ -46,9 +46,7 @@ async function assertScreenshot(
 
     const fileName = `${name}-${api}${unsupportedString}${engineString}${mobileString}${numberString}.png`;
 
-    await expect.soft(page).toHaveScreenshot(fileName, {
-        threshold: 0.1,
-    });
+    await expect.soft(page).toHaveScreenshot(fileName, { threshold: 0.1 });
 }
 
 const apis = ["webgl", "webgpu"] as const;
