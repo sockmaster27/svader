@@ -56,9 +56,12 @@ export default defineConfig({
             name: "Chromium",
             use: {
                 ...devices["Desktop Chrome"],
-                channel: "chromium",
+                channel: "chrome",
                 launchOptions: {
-                    args: ["--enable-unsafe-webgpu"],
+                    args: [
+                        "--enable-unsafe-webgpu",
+                        "--enable-features=Vulkan,VulkanFromANGLE,DefaultANGLEVulkan",
+                    ],
                 },
             },
         },
