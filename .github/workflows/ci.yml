@@ -24,8 +24,7 @@ jobs:
         run: npm run build
 
   test:
-    # Test on Windows, since I can't get WebGPU to work on Linux at all
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
