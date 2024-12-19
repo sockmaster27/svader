@@ -136,7 +136,7 @@
     /** @type {HTMLCanvasElement} */
     let canvasElement;
 
-    const canRender = typeof WebGL2RenderingContext !== "undefined";
+    let canRender = typeof WebGL2RenderingContext !== "undefined";
 
     /** @typedef {{
      *     gl: WebGL2RenderingContext,
@@ -151,78 +151,84 @@
      */
     const configPromise = new Promise(resolve =>
         onMount(async () => {
-            if (!canRender) return;
+            try {
+                if (!canRender) return;
 
-            if (canvasElement === null) return;
-            const gl = canvasElement.getContext("webgl2");
-            if (gl === null) throw new Error("Failed to get WebGL2 context.");
-            const shaderProgram = gl.createProgram();
-            if (shaderProgram === null)
-                throw new Error("Failed to create WebGL shader program.");
+                if (canvasElement === null) return;
+                const gl = canvasElement.getContext("webgl2");
+                if (gl === null)
+                    throw new Error("Failed to get WebGL2 context.");
+                const shaderProgram = gl.createProgram();
+                if (shaderProgram === null)
+                    throw new Error("Failed to create WebGL shader program.");
 
-            /**
-             * Load a shader into the shader program.
-             *
-             * @param {string} source
-             * @param {number} type
-             */
-            const loadShader = (source, type) => {
-                const shader = gl.createShader(type);
-                if (shader === null)
-                    throw new Error("Failed to create texture.");
-                gl.shaderSource(shader, source);
-                gl.compileShader(shader);
+                /**
+                 * Load a shader into the shader program.
+                 *
+                 * @param {string} source
+                 * @param {number} type
+                 */
+                const loadShader = (source, type) => {
+                    const shader = gl.createShader(type);
+                    if (shader === null)
+                        throw new Error("Failed to create texture.");
+                    gl.shaderSource(shader, source);
+                    gl.compileShader(shader);
 
-                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-                    throw new Error(
-                        `An error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`,
-                    );
+                    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+                        throw new Error(
+                            `An error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`,
+                        );
 
-                gl.attachShader(shaderProgram, shader);
-            };
+                    gl.attachShader(shaderProgram, shader);
+                };
 
-            // Simple identity function
-            const vertexShaderSource = `#version 300 es
-                in vec4 pos;
-                void main() {
-                    gl_Position = pos;
-                }
-            `;
-            loadShader(vertexShaderSource, gl.VERTEX_SHADER);
-            loadShader(await code, gl.FRAGMENT_SHADER);
+                // Simple identity function
+                const vertexShaderSource = `#version 300 es
+                    in vec4 pos;
+                    void main() {
+                        gl_Position = pos;
+                    }
+                `;
+                loadShader(vertexShaderSource, gl.VERTEX_SHADER);
+                loadShader(await code, gl.FRAGMENT_SHADER);
 
-            gl.linkProgram(shaderProgram);
-            gl.useProgram(shaderProgram);
+                gl.linkProgram(shaderProgram);
+                gl.useProgram(shaderProgram);
 
-            // Create a rectangle covering the canvas
-            const vertexAttributePosition = gl.getAttribLocation(
-                shaderProgram,
-                "pos",
-            );
-            const positionBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-            const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
-            gl.bufferData(
-                gl.ARRAY_BUFFER,
-                new Float32Array(positions),
-                gl.STATIC_DRAW,
-            );
-            const numComponents = 2; // Pull out 2 values per iteration
-            const type = gl.FLOAT; // The data in the buffer is 32bit floats
-            const normalize = false; // Don't normalize
-            const stride = 0; // How many bytes to get from one set of values to the next. 0 = use type and numComponents above
-            const offset = 0; // How many bytes inside the buffer to start from
-            gl.vertexAttribPointer(
-                vertexAttributePosition,
-                numComponents,
-                type,
-                normalize,
-                stride,
-                offset,
-            );
-            gl.enableVertexAttribArray(vertexAttributePosition);
+                // Create a rectangle covering the canvas
+                const vertexAttributePosition = gl.getAttribLocation(
+                    shaderProgram,
+                    "pos",
+                );
+                const positionBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
+                gl.bufferData(
+                    gl.ARRAY_BUFFER,
+                    new Float32Array(positions),
+                    gl.STATIC_DRAW,
+                );
+                const numComponents = 2; // Pull out 2 values per iteration
+                const type = gl.FLOAT; // The data in the buffer is 32bit floats
+                const normalize = false; // Don't normalize
+                const stride = 0; // How many bytes to get from one set of values to the next. 0 = use type and numComponents above
+                const offset = 0; // How many bytes inside the buffer to start from
+                gl.vertexAttribPointer(
+                    vertexAttributePosition,
+                    numComponents,
+                    type,
+                    normalize,
+                    stride,
+                    offset,
+                );
+                gl.enableVertexAttribArray(vertexAttributePosition);
 
-            resolve({ gl, shaderProgram });
+                resolve({ gl, shaderProgram });
+            } catch (e) {
+                console.warn(e);
+                canRender = false;
+            }
         }),
     );
 

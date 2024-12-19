@@ -34,7 +34,7 @@
      * @typedef {BuiltinParameter | NonBuiltinParameter} Parameter
      */
 
-    let canRender =
+    let canRenderGlobal =
         typeof navigator !== "undefined" &&
         typeof navigator.gpu !== "undefined";
 
@@ -48,47 +48,50 @@
 
     /**
      * A promise that resolves when the necessary global initialization has happened.
-     * Resolves to `null` iff {@linkcode canRender} is `false`.
+     * Resolves to `null` iff {@linkcode canRenderGlobal} is `false`.
      *
      * @type {Promise<GlobalConfig | null>}
      */
     const globalConfigPromise = globalInit();
     async function globalInit() {
-        if (!canRender) return null;
-        const adapter = await navigator.gpu.requestAdapter();
-        if (!adapter) {
-            canRender = false;
+        try {
+            if (!canRenderGlobal) return null;
+            const adapter = await navigator.gpu.requestAdapter();
+            if (!adapter) throw new Error("Failed to get WebGPU adapter.");
+
+            const device = await adapter.requestDevice();
+
+            const vertices = new Float32Array([
+                -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1,
+            ]);
+            const vertexBuffer = device.createBuffer({
+                label: "ScreenQuad Vertex Buffer",
+                size: vertices.byteLength,
+                usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+            });
+            device.queue.writeBuffer(vertexBuffer, 0, vertices);
+            /** @type {GPUVertexBufferLayout} */
+            const vertexBufferLayout = {
+                arrayStride: 8,
+                attributes: [
+                    {
+                        format: "float32x2",
+                        offset: 0,
+                        shaderLocation: 0,
+                    },
+                ],
+            };
+
+            return {
+                device,
+                vertexBuffer,
+                vertexBufferLayout,
+            };
+        } catch (e) {
+            console.warn(e);
+            canRenderGlobal = false;
             return null;
         }
-
-        const device = await adapter.requestDevice();
-
-        const vertices = new Float32Array([
-            -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1,
-        ]);
-        const vertexBuffer = device.createBuffer({
-            label: "ScreenQuad Vertex Buffer",
-            size: vertices.byteLength,
-            usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
-        });
-        device.queue.writeBuffer(vertexBuffer, 0, vertices);
-        /** @type {GPUVertexBufferLayout} */
-        const vertexBufferLayout = {
-            arrayStride: 8,
-            attributes: [
-                {
-                    format: "float32x2",
-                    offset: 0,
-                    shaderLocation: 0,
-                },
-            ],
-        };
-
-        return {
-            device,
-            vertexBuffer,
-            vertexBufferLayout,
-        };
     }
 
     /**
@@ -161,6 +164,8 @@
     /** @type {HTMLCanvasElement} */
     let canvasElement;
 
+    let canRender = canRenderGlobal;
+
     /**
      * @typedef {{
      *     device: GPUDevice,
@@ -179,69 +184,71 @@
      */
     const configPromise = new Promise(resolve =>
         onMount(async () => {
-            const globalConfig = await globalConfigPromise;
-            if (globalConfig === null) return;
-            const { device, vertexBuffer, vertexBufferLayout } = globalConfig;
+            try {
+                const globalConfig = await globalConfigPromise;
+                if (globalConfig === null) return;
+                const { device, vertexBuffer, vertexBufferLayout } =
+                    globalConfig;
 
-            if (canvasElement === null) return;
-            const context = canvasElement.getContext("webgpu");
-            if (!context) throw new Error("Failed to get WebGPU context.");
-            const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
-            context.configure({
-                device,
-                format: canvasFormat,
-                alphaMode: "premultiplied",
-            });
-
-            /** @type {GPUBuffer[]} */
-            const parameterBuffers = parameters.map(parameter => {
-                if (parameter.value === undefined)
-                    throw new Error(
-                        "One or more parameters had an undefined value field.",
-                    );
-
-                /** @type {number} */
-                let byteLength;
-                if (isBuiltinParameter(parameter))
-                    switch (parameter.value) {
-                        case "resolution":
-                        case "offset":
-                            byteLength = new Float32Array(2).byteLength;
-                            break;
-                        case "scale":
-                        case "time":
-                            byteLength = new Float32Array(1).byteLength;
-                            break;
-                        default:
-                            throw new Error(
-                                // @ts-expect-error: Ensure exhaustive match
-                                `Unknown built-in value: ${parameter.value}`,
-                            );
-                    }
-                else byteLength = parameter.value.byteLength;
-
-                return device.createBuffer({
-                    label: `${parameter.label} Parameter`,
-                    size: byteLength,
-                    usage:
-                        GPUBufferUsage.COPY_DST |
-                        ((parameter.storage ?? false)
-                            ? GPUBufferUsage.STORAGE
-                            : GPUBufferUsage.UNIFORM),
+                if (canvasElement === null) return;
+                const context = canvasElement.getContext("webgpu");
+                if (!context) throw new Error("Failed to get WebGPU context.");
+                const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
+                context.configure({
+                    device,
+                    format: canvasFormat,
+                    alphaMode: "premultiplied",
                 });
-            });
 
-            /** @type {GPURenderPipeline} */
-            let pipeline;
-            const fragmentCode = await code;
-            const cachedPipeline = cachedPipelines.get(fragmentCode);
-            if (cachedPipeline !== undefined) {
-                pipeline = cachedPipeline;
-            } else {
-                const vertexShaderModule = device.createShaderModule({
-                    label: "Vertex Shader",
-                    // No-op vertex shader
-                    code: `
+                /** @type {GPUBuffer[]} */
+                const parameterBuffers = parameters.map(parameter => {
+                    if (parameter.value === undefined)
+                        throw new Error(
+                            "One or more parameters had an undefined value field.",
+                        );
+
+                    /** @type {number} */
+                    let byteLength;
+                    if (isBuiltinParameter(parameter))
+                        switch (parameter.value) {
+                            case "resolution":
+                            case "offset":
+                                byteLength = new Float32Array(2).byteLength;
+                                break;
+                            case "scale":
+                            case "time":
+                                byteLength = new Float32Array(1).byteLength;
+                                break;
+                            default:
+                                throw new Error(
+                                    // @ts-expect-error: Ensure exhaustive match
+                                    `Unknown built-in value: ${parameter.value}`,
+                                );
+                        }
+                    else byteLength = parameter.value.byteLength;
+
+                    return device.createBuffer({
+                        label: `${parameter.label} Parameter`,
+                        size: byteLength,
+                        usage:
+                            GPUBufferUsage.COPY_DST |
+                            ((parameter.storage ?? false)
+                                ? GPUBufferUsage.STORAGE
+                                : GPUBufferUsage.UNIFORM),
+                    });
+                });
+
+                /** @type {GPURenderPipeline} */
+                let pipeline;
+                const fragmentCode = await code;
+                const cachedPipeline = cachedPipelines.get(fragmentCode);
+                if (cachedPipeline !== undefined) {
+                    pipeline = cachedPipeline;
+                } else {
+                    const vertexShaderModule = device.createShaderModule({
+                        label: "Vertex Shader",
+                        // No-op vertex shader
+                        code: `
                         @vertex
                         fn vertexMain(
                             @location(0) pos: vec2f,
@@ -249,42 +256,46 @@
                             return vec4<f32>(pos, 0.0, 1.0);
                         }
                     `,
+                    });
+                    const fragmentShaderModule = device.createShaderModule({
+                        label: "Fragment Shader",
+                        code: await code,
+                    });
+                    pipeline = device.createRenderPipeline({
+                        label: "Pipeline",
+                        layout: "auto",
+                        vertex: {
+                            module: vertexShaderModule,
+                            entryPoint: "vertexMain",
+                            buffers: [vertexBufferLayout],
+                        },
+                        fragment: {
+                            module: fragmentShaderModule,
+                            entryPoint: "main",
+                            targets: [{ format: canvasFormat }],
+                        },
+                    });
+                    cachedPipelines.set(fragmentCode, pipeline);
+                }
+
+                const bindGroup = createBindGroup(
+                    device,
+                    pipeline,
+                    parameterBuffers,
+                );
+
+                resolve({
+                    device,
+                    context,
+                    pipeline,
+                    vertexBuffer,
+                    parameterBuffers,
+                    bindGroup,
                 });
-                const fragmentShaderModule = device.createShaderModule({
-                    label: "Fragment Shader",
-                    code: await code,
-                });
-                pipeline = device.createRenderPipeline({
-                    label: "Pipeline",
-                    layout: "auto",
-                    vertex: {
-                        module: vertexShaderModule,
-                        entryPoint: "vertexMain",
-                        buffers: [vertexBufferLayout],
-                    },
-                    fragment: {
-                        module: fragmentShaderModule,
-                        entryPoint: "main",
-                        targets: [{ format: canvasFormat }],
-                    },
-                });
-                cachedPipelines.set(fragmentCode, pipeline);
+            } catch (e) {
+                console.warn(e);
+                canRender = false;
             }
-
-            const bindGroup = createBindGroup(
-                device,
-                pipeline,
-                parameterBuffers,
-            );
-
-            resolve({
-                device,
-                context,
-                pipeline,
-                vertexBuffer,
-                parameterBuffers,
-                bindGroup,
-            });
         }),
     );
 
