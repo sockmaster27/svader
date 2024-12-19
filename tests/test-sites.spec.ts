@@ -43,7 +43,7 @@ async function assertScreenshot(
 
     await expect.soft(page).toHaveScreenshot(fileName, {
         // Allow for slightly different rendering on different platforms,
-        // since Chrome and Firefox have slightly different text-rendering and inputs etc.
+        // since different browsers have slightly different text-rendering and inputs etc.
         maxDiffPixelRatio: 0.01,
         timeout: 10000,
     });
