@@ -1,6 +1,11 @@
 import { test, expect, TestInfo, Page } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
+    /** Bind the console to the Playwright test runner, rather than the browser */
+    const logOuter = console.log;
+    page.on("console", msg => {
+        logOuter(`[console.${msg.type()}] ${msg.text()}`);
+    });
     page.on("pageerror", msg => {
         expect.soft(false, `Error thrown:\n${msg.message}`).toBeTruthy();
     });
