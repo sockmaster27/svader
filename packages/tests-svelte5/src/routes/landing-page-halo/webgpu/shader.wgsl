@@ -62,5 +62,5 @@ fn main(@builtin(position) raw_pos: vec4f) -> @location(0) vec4f {
     let cool_color = vec4(0.67, 0.82, 1.0, 1.0);
     let color = mix(warm_color, cool_color, gradient_value);
 
-    return vec4(color * v);
+    return color * v;
 }
