@@ -1,6 +1,6 @@
 #version 300 es
 
-precision mediump float;
+precision highp float;
 out vec4 fragColor;
 
 uniform vec2 u_resolution;

@@ -1,6 +1,11 @@
 import { test, expect, TestInfo, Page } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
+    /** Bind the console to the Playwright test runner, rather than the browser */
+    const logOuter = console.log;
+    page.on("console", msg => {
+        logOuter(`[console.${msg.type()}] ${msg.text()}`);
+    });
     page.on("pageerror", msg => {
         expect.soft(false, `Error thrown:\n${msg.message}`).toBeTruthy();
     });
@@ -38,7 +43,7 @@ async function assertScreenshot(
 
     await expect.soft(page).toHaveScreenshot(fileName, {
         // Allow for slightly different rendering on different platforms,
-        // since Chrome and Firefox have slightly different text-rendering and inputs etc.
+        // since different browsers have slightly different text-rendering and inputs etc.
         maxDiffPixelRatio: 0.01,
         timeout: 10000,
     });
