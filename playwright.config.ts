@@ -1,6 +1,14 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
+ * Chromium arguments to ignore DPI scaling of the current physical device.
+ */
+const chromiumIgnoreDpi = [
+    "--high-dpi-support=1",
+    "--force-device-scale-factor=1",
+];
+
+/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
@@ -19,7 +27,6 @@ export default defineConfig({
     use: {
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: "on-first-retry",
-
         contextOptions: {
             // Disable animations so screenshots are comparable
             reducedMotion: "reduce",
@@ -50,6 +57,9 @@ export default defineConfig({
             use: {
                 ...devices["Desktop Chrome"],
                 channel: "chromium",
+                launchOptions: {
+                    args: [...chromiumIgnoreDpi],
+                },
             },
         },
         {
@@ -59,6 +69,7 @@ export default defineConfig({
                 channel: "chrome",
                 launchOptions: {
                     args: [
+                        ...chromiumIgnoreDpi,
                         "--enable-unsafe-webgpu",
                         "--enable-features=Vulkan,VulkanFromANGLE,DefaultANGLEVulkan",
                     ],

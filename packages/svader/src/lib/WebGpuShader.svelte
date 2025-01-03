@@ -111,7 +111,7 @@
     /**
      * The width of the canvas element.
      *
-     * If not set, the width will be set to 100% of the parent element.
+     * If not set, the width will be set to 100%.
      *
      * @type {string | undefined}
      */
@@ -119,7 +119,7 @@
     /**
      * The height of the canvas element.
      *
-     * If not set, the height will be set to 100% of the parent element.
+     * If not set, the height will be set to 100%.
      *
      * @type {string | undefined}
      */
