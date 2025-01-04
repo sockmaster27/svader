@@ -122,7 +122,7 @@
 
         if (requestHandle !== null) return;
 
-        requestHandle = requestAnimationFrame(async () => {
+        requestHandle = requestAnimationFrame(() => {
             renderCallbacks.forEach(callback => callback());
             renderCallbacks.length = 0;
 
@@ -150,7 +150,7 @@
      * @param {number} canvasWidth
      * @param {number} canvasHeight
      */
-    async function updateCanvasSizeInner(canvasWidth, canvasHeight) {
+    function updateCanvasSizeInner(canvasWidth, canvasHeight) {
         // Resizing must happen right before the next render pass.
         renderCallbacks.push(() => {
             canvasElement.width = canvasWidth;
