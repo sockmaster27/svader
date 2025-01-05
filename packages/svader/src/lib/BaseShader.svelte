@@ -2,6 +2,7 @@
     import { pixelScale, clamp } from "./utils.js";
     import { intersectionObserver } from "./intersectionObserver.js";
     import { onDestroy, onMount } from "svelte";
+    import { devicePixelResizeObserver } from "./devicePixelResizeObserver.js";
 
     /**
      * The width of the canvas element.
@@ -76,36 +77,6 @@
     export let canvasElement;
 
     /**
-     * Size of the containing element in physical device pixels, as reported by `devicePixelContentBoxSize`.
-     *
-     * @type {ResizeObserverSize[]}
-     */
-    let containerSize;
-    /**
-     * Width of the containing element in physical device pixels.
-     */
-    $: containerWidth = containerSize?.[0]?.inlineSize;
-    /**
-     * Height of the containing element in physical device pixels.
-     */
-    $: containerHeight = containerSize?.[0]?.blockSize;
-
-    /**
-     * Size of the canvas in physical device pixelss, as reported by `devicePixelContentBoxSize`.
-     *
-     * @type {ResizeObserverSize[]}
-     */
-    let canvasSize;
-    /**
-     * Width of the canvas in physical device pixels.
-     */
-    $: canvasWidth = canvasSize?.[0]?.inlineSize;
-    /**
-     * Height of the canvas in physical device pixels.
-     */
-    $: canvasHeight = canvasSize?.[0]?.blockSize;
-
-    /**
      * The handle returned by {@linkcode requestAnimationFrame}.
      * `null` if no render pass has been requested.
      *
@@ -147,12 +118,14 @@
     }
 
     /**
-     * @param {number} canvasWidth
-     * @param {number} canvasHeight
+     * @param {import("./devicePixelResizeObserver.js").DevicePixelResizeEvent} event
      */
-    function updateCanvasSizeInner(canvasWidth, canvasHeight) {
+    function updateCanvasSizeInner(event) {
         // Resizing must happen right before the next render pass.
         renderCallbacks.push(() => {
+            const canvasWidth = event.detail.width;
+            const canvasHeight = event.detail.height;
+
             canvasElement.width = canvasWidth;
             canvasElement.height = canvasHeight;
 
@@ -162,11 +135,15 @@
         requestRender();
     }
 
-    $: if (canvasWidth !== undefined && canvasHeight !== undefined)
-        updateCanvasSizeInner(canvasWidth, canvasHeight);
+    /**
+     * @param {import("./devicePixelResizeObserver.js").DevicePixelResizeEvent} event
+     */
+    function updateContainerSizeInner(event) {
+        const canvasWidth = event.detail.width;
+        const canvasHeight = event.detail.height;
 
-    $: if (containerWidth !== undefined && containerHeight !== undefined)
-        updateContainerSize(containerWidth, containerHeight);
+        updateContainerSize(canvasWidth, canvasHeight);
+    }
 
     $: if (offsetX !== undefined && offsetY !== undefined)
         updateOffset(offsetX, offsetY);
@@ -209,7 +186,8 @@
 {#if canRender}
     <div
         bind:this={containerElement}
-        bind:devicePixelContentBoxSize={containerSize}
+        use:devicePixelResizeObserver
+        on:devicepixelresize={updateContainerSizeInner}
         use:intersectionObserver
         on:intersectionchanged={updateCanvasCutout}
         style:--width={width}
@@ -217,7 +195,8 @@
     >
         <canvas
             bind:this={canvasElement}
-            bind:devicePixelContentBoxSize={canvasSize}
+            use:devicePixelResizeObserver
+            on:devicepixelresize={updateCanvasSizeInner}
             use:intersectionObserver={{ rootMargin: "100px" }}
             on:intersectionchanged={updateCanvasCutout}
             class:offset-from-bottom={offsetFromBottom}
