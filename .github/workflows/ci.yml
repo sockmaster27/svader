@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [master]
 
+# Cancel any in-progress CI runs for a PR if it is updated
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
