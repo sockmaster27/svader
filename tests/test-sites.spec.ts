@@ -61,6 +61,12 @@ builds.forEach(({ name, port }) => {
 
         apis.forEach(api => {
             test.describe(api, () => {
+                test("Test", async ({ page }) => {
+                    await page.goto("chrome://gpu");
+                    await page.pdf({
+                        path: "test.pdf",
+                    });
+                });
                 test("Hello world", async ({ page, browserName }, info) => {
                     const pageName = "hello-world";
 

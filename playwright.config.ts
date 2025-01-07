@@ -34,12 +34,12 @@ export default defineConfig({
     },
 
     projects: [
-        {
-            name: "Firefox <No WebGPU>",
-            use: {
-                ...devices["Desktop Firefox"],
-            },
-        },
+        // {
+        //     name: "Firefox <No WebGPU>",
+        //     use: {
+        //         ...devices["Desktop Firefox"],
+        //     },
+        // },
         /* TODO: Test this once Firefox supports WebGPU in stable */
         // {
         //     name: "Firefox",
@@ -52,21 +52,21 @@ export default defineConfig({
         //         },
         //     },
         // },
-        {
-            name: "Chromium <No WebGPU>",
-            use: {
-                ...devices["Desktop Chrome"],
-                channel: "chromium",
-                launchOptions: {
-                    args: [...chromiumIgnoreDpi],
-                },
-            },
-        },
+        // {
+        //     name: "Chromium <No WebGPU>",
+        //     use: {
+        //         ...devices["Desktop Chrome"],
+        //         channel: "chromium",
+        //         launchOptions: {
+        //             args: [...chromiumIgnoreDpi],
+        //         },
+        //     },
+        // },
         {
             name: "Chromium",
             use: {
                 ...devices["Desktop Chrome"],
-                channel: "chrome",
+                channel: "chromium",
                 launchOptions: {
                     args: [
                         ...chromiumIgnoreDpi,
@@ -76,10 +76,10 @@ export default defineConfig({
                 },
             },
         },
-        {
-            name: "WebKit <No WebGPU>",
-            use: { ...devices["Desktop Safari"] },
-        },
+        // {
+        //     name: "WebKit <No WebGPU>",
+        //     use: { ...devices["Desktop Safari"] },
+        // },
         /* TODO: Test these as well */
         // {
         //   name: 'Mobile Chrome',
