@@ -10,7 +10,7 @@
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
     },
     "devDependencies": {
-        "svelte": "^5.0.0"
+        "svelte": "^5.17.3"
     },
     "svelte": "./dist/index.js",
     "types": "./dist/index.d.ts",
