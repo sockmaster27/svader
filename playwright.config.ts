@@ -1,14 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Chromium arguments to ignore DPI scaling of the current physical device.
- */
-const chromiumIgnoreDpi = [
-    "--high-dpi-support=1",
-    "--force-device-scale-factor=1",
-];
-
-/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
@@ -40,35 +32,16 @@ export default defineConfig({
                 ...devices["Desktop Firefox"],
             },
         },
-        /* TODO: Test this once Firefox supports WebGPU in stable */
-        // {
-        //     name: "Firefox",
-        //     use: {
-        //         ...devices["Desktop Firefox"],
-        //         launchOptions: {
-        //             firefoxUserPrefs: {
-        //                 "dom.webgpu.enabled": true,
-        //             },
-        //         },
-        //     },
-        // },
-        {
-            name: "Chromium <No WebGPU>",
-            use: {
-                ...devices["Desktop Chrome"],
-                channel: "chromium",
-                launchOptions: {
-                    args: [...chromiumIgnoreDpi],
-                },
-            },
-        },
         {
             name: "Chromium",
             use: {
                 ...devices["Desktop Chrome"],
                 channel: "chrome",
                 launchOptions: {
-                    args: [...chromiumIgnoreDpi],
+                    args: [
+                        "--high-dpi-support=1",
+                        "--force-device-scale-factor=1",
+                    ],
                 },
             },
         },
