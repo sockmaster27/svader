@@ -17,7 +17,6 @@ test.beforeEach(async ({ page }) => {
  *
  * @param page
  * @param info
- * @param browserName
  * @param name A name that identifies this test.
  * @param api The API used in the test, either `"webgl"` or `"webgpu"`.
  * @param number A number identifying the specific screeenshot within the test, if multiple are included.
@@ -25,7 +24,6 @@ test.beforeEach(async ({ page }) => {
 async function assertScreenshot(
     page: Page,
     info: TestInfo,
-    browserName: string,
     name: string,
     api: "webgl" | "webgpu",
     number?: number,
@@ -37,18 +35,16 @@ async function assertScreenshot(
     const unsupportedString =
         isWebGpu && isWebGpuUnsupported ? "-unsupported" : "";
 
-    const engineString = `-${browserName}`;
-
     const isMobile = info.project.use.isMobile ?? false;
     const mobileString = isMobile ? "-mobile" : "";
 
     const numberString = number !== undefined ? `-${number}` : "";
 
-    const fileName = `${name}-${api}${unsupportedString}${engineString}${mobileString}${numberString}.png`;
+    const fileName = `${name}-${api}${unsupportedString}${mobileString}${numberString}.png`;
 
-    await expect.soft(page).toHaveScreenshot(fileName, {
-        threshold: 0.1,
-    });
+    await expect
+        .soft(page)
+        .toHaveScreenshot(fileName, { maxDiffPixelRatio: 0.01 });
 }
 
 const apis = ["webgl", "webgpu"] as const;
@@ -63,66 +59,33 @@ builds.forEach(({ name, port }) => {
 
         apis.forEach(api => {
             test.describe(api, () => {
-                test("Hello world", async ({ page, browserName }, info) => {
+                test("Hello world", async ({ page }, info) => {
                     const pageName = "hello-world";
 
                     await page.goto(`/${pageName}/${api}`);
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                    );
+                    await assertScreenshot(page, info, pageName, api);
                 });
 
-                test("Remounting canvas", async ({
-                    page,
-                    browserName,
-                }, info) => {
+                test("Remounting canvas", async ({ page }, info) => {
                     const pageName = "remount";
 
                     await page.goto(`/${pageName}/${api}`);
                     const show = page.getByLabel("Show");
                     await show.uncheck();
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                        1,
-                    );
+                    await assertScreenshot(page, info, pageName, api, 1);
                     for (let i = 0; i < 10; i++) {
                         await show.check();
                         await show.uncheck();
                     }
                     await show.check();
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                        2,
-                    );
+                    await assertScreenshot(page, info, pageName, api, 2);
                 });
 
-                test("Oversized canvas", async ({
-                    page,
-                    browserName,
-                }, info) => {
+                test("Oversized canvas", async ({ page }, info) => {
                     const pageName = "oversized-canvas";
 
                     await page.goto(`/${pageName}/${api}`);
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                        1,
-                    );
+                    await assertScreenshot(page, info, pageName, api, 1);
                     // Scroll to bottom-right corner
                     await page.evaluate(() =>
                         window.scrollBy(
@@ -130,82 +93,33 @@ builds.forEach(({ name, port }) => {
                             document.body.scrollHeight,
                         ),
                     );
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                        2,
-                    );
+                    await assertScreenshot(page, info, pageName, api, 2);
                 });
 
-                test("Landing page with bubbles", async ({
-                    page,
-                    browserName,
-                }, info) => {
+                test("Landing page with bubbles", async ({ page }, info) => {
                     const pageName = "landing-page-bubbles";
 
                     await page.goto(`/${pageName}/${api}`);
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                    );
+                    await assertScreenshot(page, info, pageName, api);
                 });
 
-                test("Landing page with a halo", async ({
-                    page,
-                    browserName,
-                }, info) => {
+                test("Landing page with a halo", async ({ page }, info) => {
                     const pageName = "landing-page-halo";
 
                     await page.goto(`/${pageName}/${api}`);
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                    );
+                    await assertScreenshot(page, info, pageName, api);
                 });
 
-                test("Slider component", async ({
-                    page,
-                    browserName,
-                }, info) => {
+                test("Slider component", async ({ page }, info) => {
                     const pageName = "slider";
 
                     await page.goto(`/${pageName}/${api}`);
                     const slider = page.getByRole("slider");
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                        1,
-                    );
+                    await assertScreenshot(page, info, pageName, api, 1);
                     await slider.fill("1");
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                        2,
-                    );
+                    await assertScreenshot(page, info, pageName, api, 2);
                     await slider.fill("0");
-                    await assertScreenshot(
-                        page,
-                        info,
-                        browserName,
-                        pageName,
-                        api,
-                        3,
-                    );
+                    await assertScreenshot(page, info, pageName, api, 3);
                 });
             });
         });

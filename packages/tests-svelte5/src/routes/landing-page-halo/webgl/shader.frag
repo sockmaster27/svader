@@ -1,6 +1,6 @@
 #version 300 es
 
-precision mediump float;
+precision highp float;
 out vec4 fragColor;
 
 uniform vec2 u_resolution;
@@ -65,5 +65,5 @@ void main() {
     vec4 cool_color = vec4(0.67, 0.82, 1.0, 1.0);
     vec4 color = mix(warm_color, cool_color, gradient_value);
 
-    fragColor = vec4(color * v);
+    fragColor = color * v;
 }

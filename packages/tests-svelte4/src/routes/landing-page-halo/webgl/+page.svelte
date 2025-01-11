@@ -3,12 +3,12 @@
     import shaderCode from "./shader.frag?raw";
 </script>
 
-<!-- Import 'Handjet' font from Google Fonts -->
+<!-- Import 'Teko' font from Google Fonts -->
 <svelte:head>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Handjet&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Teko&display=swap"
         rel="stylesheet"
     />
 </svelte:head>
@@ -57,7 +57,7 @@
     }
 
     h1 {
-        font-family: "Handjet", sans-serif;
+        font-family: "Teko", sans-serif;
         font-size: 8rem;
 
         color: rgb(250, 250, 250);
