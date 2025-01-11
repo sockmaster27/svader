@@ -8,5 +8,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    ignore: svelte
-      update-types: ["version-update:semver-major"]
+    ignore:
+      - dependency-name: "svelte"
+        update-types: ["version-update:semver-major"]
