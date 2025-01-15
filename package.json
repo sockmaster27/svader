@@ -30,7 +30,7 @@
         "@eslint/compat": "^1.2.5",
         "@playwright/test": "^1.49.0",
         "@sveltejs/adapter-auto": "^3.3.1",
-        "@sveltejs/kit": "^2.15.2",
+        "@sveltejs/kit": "^2.15.3",
         "@sveltejs/package": "^2.3.7",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
         "@types/node": "^22.10.6",
