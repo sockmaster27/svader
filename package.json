@@ -37,7 +37,7 @@
         "eslint": "^9.20.1",
         "eslint-plugin-svelte": "^2.36.0",
         "globals": "^15.15.0",
-        "prettier": "^3.5.0",
+        "prettier": "^3.5.1",
         "prettier-plugin-svelte": "^3.3.3",
         "publint": "^0.3.5",
         "svelte-check": "^4.1.4",
