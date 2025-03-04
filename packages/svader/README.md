@@ -3,6 +3,11 @@
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sockmaster27/svader/master/resources/logoDark.png">
     <img width="150" alt="Svader Logo" src="https://raw.githubusercontent.com/sockmaster27/svader/master/resources/logoLight.png">
   </picture>
+  <br>
+  <a href="https://github.com/sockmaster27/svader/blob/master/LICENSE.md"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue"></a>
+  <a href="https://github.com/sockmaster27/svader/actions/workflows/ci.yml"><img alt="CI Status" src="https://github.com/sockmaster27/svader/actions/workflows/ci.yml/badge.svg"></a>
+  <br>
+  <a href="https://www.npmjs.com/package/svader"><img alt="NPM Version" src="https://img.shields.io/npm/v/svader"></a>
 </p>
 
 # Svader
@@ -85,14 +90,8 @@ The following is a minimal example of a WebGL fragment shader component.
     height="500px"
     code={shaderCode}
     parameters={[
-        {
-            name: "u_resolution",
-            value: "resolution",
-        },
-        {
-            name: "u_offset",
-            value: "offset",
-        },
+        { name: "u_resolution", value: "resolution" },
+        { name: "u_offset", value: "offset" },
     ]}
 >
     <div class="fallback">WebGL not supported in this environment.</div>
@@ -113,7 +112,7 @@ What this code does is:
 2. Divide the resulting coordinates entrywise by the `u_resolution` uniform to normalize the coordinates between 0 and 1.
 3. Return the normalized coordinates as the color of the pixel, such that the `x` coordinate becomes the red channel and the `y` coordinate becomes the green channel. The blue channel is always set to 0, and the alpha (opacity) channel is always set to 1 (fully opaque).
 
-In GLES, _uniforms_ are inputs to the function, that are the same for every pixel on the screen.
+In GLES, _uniforms_ are inputs to the shader program, that are the same for every pixel on the screen.
 These need to be passed in via the `parameters` property of the `<WebGlShader>` component.
 In this case, we need to pass in two uniforms: `u_resolution` and `u_offset`.
 Since these specific parameters are very commonly used, they are specially implemented in Svader
@@ -186,16 +185,8 @@ The following is a minimal example of a WebGPU fragment shader component.
     height="500px"
     code={shaderCode}
     parameters={[
-        {
-            label: "Resolution",
-            binding: 0,
-            value: "resolution",
-        },
-        {
-            label: "Offset",
-            binding: 1,
-            value: "offset",
-        },
+        { label: "Resolution", binding: 0, value: "resolution" },
+        { label: "Offset", binding: 1, value: "offset" },
     ]}
 >
     <div class="fallback">WebGPU not supported in this environment.</div>
