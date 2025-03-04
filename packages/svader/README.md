@@ -4,10 +4,10 @@
     <img width="150" alt="Svader Logo" src="https://raw.githubusercontent.com/sockmaster27/svader/master/resources/logoLight.png">
   </picture>
   <br>
-  <a href="https://github.com/sockmaster27/svader/blob/master/LICENSE.md"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue"></a>
-  <a href="https://github.com/sockmaster27/svader/actions/workflows/ci.yml"><img alt="CI Status" src="https://github.com/sockmaster27/svader/actions/workflows/ci.yml/badge.svg"></a>
+  <a target="_blank" href="https://github.com/sockmaster27/svader/blob/master/LICENSE.md"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue"></a>
+  <a target="_blank" href="https://github.com/sockmaster27/svader/actions/workflows/ci.yml"><img alt="CI Status" src="https://github.com/sockmaster27/svader/actions/workflows/ci.yml/badge.svg"></a>
   <br>
-  <a href="https://www.npmjs.com/package/svader"><img alt="NPM Version" src="https://img.shields.io/npm/v/svader"></a>
+  <a target="_blank" href="https://www.npmjs.com/package/svader"><img alt="NPM Version" src="https://img.shields.io/npm/v/svader"></a>
 </p>
 
 # Svader
