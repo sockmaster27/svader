@@ -40,7 +40,7 @@
         "prettier": "^3.5.3",
         "prettier-plugin-svelte": "^3.3.3",
         "publint": "^0.3.12",
-        "svelte-check": "^4.1.6",
+        "svelte-check": "^4.1.7",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.31.1",
         "vite": "^6.3.4"
