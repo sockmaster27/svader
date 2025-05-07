@@ -27,7 +27,7 @@
         "test": "npm run package && playwright test"
     },
     "devDependencies": {
-        "@eslint/compat": "^1.2.8",
+        "@eslint/compat": "^1.2.9",
         "@playwright/test": "^1.52.0",
         "@sveltejs/adapter-auto": "^6.0.0",
         "@sveltejs/kit": "^2.20.8",
