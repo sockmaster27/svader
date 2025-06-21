@@ -35,7 +35,7 @@
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
         "@types/node": "^24.0.3",
         "eslint": "^9.29.0",
-        "eslint-plugin-svelte": "^3.9.2",
+        "eslint-plugin-svelte": "^3.9.3",
         "globals": "^16.2.0",
         "prettier": "^3.5.3",
         "prettier-plugin-svelte": "^3.4.0",
