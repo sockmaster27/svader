@@ -41,20 +41,28 @@ export function devicePixelResizeObserver(node) {
     function callback(entries) {
         const entry = entries[0];
 
-        const detail = hasDevicePixelContentBox
-            ? {
-                  width: entry.devicePixelContentBoxSize[0].inlineSize,
-                  height: entry.devicePixelContentBoxSize[0].blockSize,
-              }
-            : {
-                  // Not perfect, but it's the best we can do in this case.
-                  width:
-                      entry.contentBoxSize[0].inlineSize *
-                      window.devicePixelRatio,
-                  height:
-                      entry.contentBoxSize[0].blockSize *
-                      window.devicePixelRatio,
-              };
+        let detail;
+        if (hasDevicePixelContentBox) {
+            detail = {
+                width: entry.devicePixelContentBoxSize[0].inlineSize,
+                height: entry.devicePixelContentBoxSize[0].blockSize,
+            };
+        } else if (entry.contentBoxSize) {
+            // Not perfect, but it's the best we can do in this case.
+            detail = {
+                width:
+                    entry.contentBoxSize[0].inlineSize *
+                    window.devicePixelRatio,
+                height:
+                    entry.contentBoxSize[0].blockSize * window.devicePixelRatio,
+            };
+        } else {
+            // Fallback for older browsers without contentBoxSize support
+            detail = {
+                width: entry.contentRect.width * window.devicePixelRatio,
+                height: entry.contentRect.height * window.devicePixelRatio,
+            };
+        }
 
         node.dispatchEvent(new CustomEvent("devicepixelresize", { detail }));
     }
