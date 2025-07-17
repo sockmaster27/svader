@@ -45,6 +45,12 @@ To run the tests, run the following command in the root directory of the project
 npm run test
 ```
 
+> You may need to install Playwright browsers manually before running the tests.
+>
+> ```bash
+> npx playwright install
+> ```
+
 This will run the automated tests using the [Playwright](https://playwright.dev/) testing framework.
 
 Playwright works by running the test sites in a set of different browsers on your computer. This means that it might be necessary to install some additional browsers at this point, which Playwright will guide you through if necessary.
