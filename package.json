@@ -33,7 +33,7 @@
         "@sveltejs/kit": "^2.25.1",
         "@sveltejs/package": "^2.4.0",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
-        "@types/node": "^24.0.14",
+        "@types/node": "^24.0.15",
         "eslint": "^9.31.0",
         "eslint-plugin-svelte": "^3.10.1",
         "globals": "^16.3.0",
