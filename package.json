@@ -39,7 +39,7 @@
         "globals": "^16.4.0",
         "prettier": "^3.6.2",
         "prettier-plugin-svelte": "^3.4.0",
-        "publint": "^0.3.12",
+        "publint": "^0.3.13",
         "svelte-check": "^4.3.1",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.44.0",
