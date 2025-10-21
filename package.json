@@ -42,7 +42,7 @@
         "publint": "^0.3.14",
         "svelte-check": "^4.3.3",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.46.1",
+        "typescript-eslint": "^8.46.2",
         "vite": "^6.3.5"
     }
 }
