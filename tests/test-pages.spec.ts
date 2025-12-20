@@ -1,7 +1,5 @@
 import { test, expect, TestInfo, Page } from "@playwright/test";
 
-test.use({ baseURL: `http://localhost:4173` });
-
 test.beforeEach(async ({ page }) => {
     /** Bind the console to the Playwright test runner, rather than the browser */
     const logOuter = console.log;
