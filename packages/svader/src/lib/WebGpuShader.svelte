@@ -100,6 +100,7 @@
      *
      * @type {Map<string, GPURenderPipeline>}
      */
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity
     const cachedPipelines = new Map();
 </script>
 
