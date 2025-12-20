@@ -14,8 +14,6 @@
 
 Create GPU-rendered Svelte components with WebGL and WebGPU fragment shaders.
 
-Supports Svelte 4 and Svelte 5.
-
 ## What is a fragment shader?
 
 In short, a _fragment shader_ can be written as a program that takes the coordinates of a pixel on the screen and returns the color that this pixel should have.
@@ -24,7 +22,7 @@ This program can be executed on the GPU, ensuring massive parallelism and speed.
 To learn more about how to write fragment shaders, check out [The Book of Shaders](https://thebookofshaders.com/).
 
 The following is a collection of examples all made using Svader. The live version of all of these can be previewed on [svader.vercel.app](https://svader.vercel.app/),
-and the source code can be found in the [`src/routes/`](https://github.com/sockmaster27/svader/tree/master/packages/tests-svelte5/src/routes) directory.
+and the source code can be found in the [`src/routes/`](https://github.com/sockmaster27/svader/tree/master/packages/tests-site/src/routes) directory.
 
 ![Shader example collage](https://raw.githubusercontent.com/sockmaster27/svader/master/resources/collage.png)
 

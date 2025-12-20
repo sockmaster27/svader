@@ -1,5 +1,5 @@
 {
-    "name": "tests-svelte5",
+    "name": "test-site",
     "private": true,
     "scripts": {
         "postinstall": "svelte-kit sync",
@@ -8,9 +8,6 @@
         "preview": "vite build && vite preview",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
-    },
-    "devDependencies": {
-        "svelte": "^5.0.0"
     },
     "svelte": "./dist/index.js",
     "types": "./dist/index.d.ts",

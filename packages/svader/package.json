@@ -11,7 +11,6 @@
     "keywords": [
         "svader",
         "svelte",
-        "svelte4",
         "svelte5",
         "svelte-components",
         "webgpu",
@@ -41,11 +40,10 @@
         "!dist/**/*.spec.*"
     ],
     "peerDependencies": {
-        "svelte": "^5.0.0||^4.0.0"
+        "svelte": "^5.0.0"
     },
     "devDependencies": {
-        "@webgpu/types": "^0.1.68",
-        "svelte": "^5.0.0"
+        "@webgpu/types": "^0.1.68"
     },
     "svelte": "./dist/index.js",
     "types": "./dist/index.d.ts",
