@@ -43,7 +43,7 @@
         "svelte": "^5.0.0"
     },
     "devDependencies": {
-        "@webgpu/types": "^0.1.68"
+        "@webgpu/types": "^0.1.69"
     },
     "svelte": "./dist/index.js",
     "types": "./dist/index.d.ts",
