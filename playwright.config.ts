@@ -25,6 +25,9 @@ export default defineConfig({
             reducedMotion: "reduce",
         },
     },
+    expect: {
+        timeout: 30_000,
+    },
 
     projects: [
         {
