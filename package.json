@@ -37,7 +37,7 @@
         "prettier": "^3.8.1",
         "prettier-plugin-svelte": "^3.5.1",
         "publint": "^0.3.18",
-        "svelte": "^5.53.9",
+        "svelte": "^5.53.10",
         "svelte-check": "^4.4.5",
         "typescript": "^5.9.3",
         "typescript-eslint": "^8.57.0",
