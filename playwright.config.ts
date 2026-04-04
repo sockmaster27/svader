@@ -31,7 +31,7 @@ export default defineConfig({
 
     projects: [
         {
-            name: "Firefox <No WebGPU>",
+            name: "Firefox",
             use: {
                 ...devices["Desktop Firefox"],
             },
