@@ -33,7 +33,7 @@
         "@types/node": "^26.0.0",
         "eslint": "^10.5.0",
         "eslint-plugin-svelte": "^3.19.0",
-        "globals": "^17.6.0",
+        "globals": "^17.7.0",
         "prettier": "^3.8.4",
         "prettier-plugin-svelte": "^4.1.1",
         "publint": "^0.3.21",
