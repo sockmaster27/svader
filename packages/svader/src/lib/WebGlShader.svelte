@@ -42,10 +42,6 @@
      *     value: readonly [number, number, number, number],
      * }
      * | {
-     *     type: "vec4" | "ivec4" | "uvec4",
-     *     value: readonly [number, number, number, number],
-     * }
-     * | {
      *     type: "mat2",
      *     value: readonly [
      *         number, number,
