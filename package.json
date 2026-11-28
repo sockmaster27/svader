@@ -29,7 +29,7 @@
         "@sveltejs/adapter-auto": "^9.0.0",
         "@sveltejs/kit": "^3.4.0",
         "@sveltejs/package": "^3.0.3",
-        "@sveltejs/vite-plugin-svelte": "^7.3.1",
+        "@sveltejs/vite-plugin-svelte": "^7.3.2",
         "@types/node": "^26.6.6",
         "eslint": "^10.15.0",
         "eslint-plugin-svelte": "^3.24.1",
